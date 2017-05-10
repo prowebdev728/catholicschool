@@ -113,7 +113,7 @@ if ($motherDeceased == 1) {
   <link rel="stylesheet" href="verticalTab.css">
 </head>
 <body>
-
+<div class="container-fluid">
   <!-- Header-->
   <div class="jumbotron">
     <div class="container">
@@ -122,7 +122,7 @@ if ($motherDeceased == 1) {
   </div>
 
   <!-- Tabs: header-->
-  <div class="col-sm-12 col-sm-offset-1">
+  <div class="col-sm-12">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
       <div class="list-group">
           <a href="#" class="list-group-item active text-left">
@@ -350,6 +350,7 @@ if ($motherDeceased == 1) {
         </div>
     </div>
   </div>
+</div>
 </body>
 
 <script>
