@@ -125,9 +125,9 @@ if ($motherDeceased == 1) {
   <div class="col-sm-12">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
       <div class="list-group">
-          <a href="#" class="list-group-item active text-left">
+        <a href="#" class="list-group-item active text-left">
           <h4 class="glyphicon glyphicon-info-sign"></h4>&nbsp;&nbsp;&nbsp;Introduction
-          </a>
+        </a>
         <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-home"></h4>&nbsp;&nbsp;&nbsp;Household Information
         </a>
@@ -365,6 +365,9 @@ $(document).ready(function() {
         var index = $(this).index();
         $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
         $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+        //display
+        $("div.bhoechie-tab>div.bhoechie-tab-content").css("display", "none");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).css("display", "block");
     });
 });
 
