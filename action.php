@@ -29,6 +29,15 @@
       background-color: rgb(217, 83, 79);
       border-color: rgb(212, 63, 58);
   }
+
+  /*** Tab's Style ***/
+  .bhoechie-tab-content {
+    display: none;
+  }
+
+  .bhoechie-tab-content.active {
+    display: block;
+  }
 </style>
 
 <!-- Jquery CDN -->
@@ -365,9 +374,6 @@ $(document).ready(function() {
         var index = $(this).index();
         $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
         $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
-        //display
-        $("div.bhoechie-tab>div.bhoechie-tab-content").css("display", "none");
-        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).css("display", "block");
     });
 });
 
