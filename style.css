@@ -42,3 +42,26 @@ table.table {
   margin-top: 0;
   color:#55518a;
 }
+
+.homeaddress, .shippingaddress {
+	display: block;
+	padding: 10px 0px 0px 10px;
+	border-top: 1px solid #ddd;
+	font-size: 18px;
+}
+
+.homeaddress-city, .shippingaddress-city {
+	width: 50%;
+	display: inline-block;
+}
+.homeaddress-state, .shippingaddress-state {
+	width: 18%;
+	display: inline-block;
+}
+.homeaddress-zipcode, .shippingaddress-zipcode {
+	width: 28%;
+	display: inline-block;
+}
+.homeaddress-country, .shippingaddress-country {
+	margin-left: 52%;
+}
