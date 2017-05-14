@@ -2,42 +2,10 @@
 <!-- Style -->
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 
 <style type="text/css">
-  .input-group-addon.primary {
-      color: rgb(255, 255, 255);
-      background-color: rgb(50, 118, 177);
-      border-color: rgb(40, 94, 142);
-  }
-  .input-group-addon.success {
-      color: rgb(255, 255, 255);
-      background-color: rgb(92, 184, 92);
-      border-color: rgb(76, 174, 76);
-  }
-  .input-group-addon.info {
-      color: rgb(255, 255, 255);
-      background-color: rgb(57, 179, 215);
-      border-color: rgb(38, 154, 188);
-  }
-  .input-group-addon.warning {
-      color: rgb(255, 255, 255);
-      background-color: rgb(240, 173, 78);
-      border-color: rgb(238, 162, 54);
-  }
-  .input-group-addon.danger {
-      color: rgb(255, 255, 255);
-      background-color: rgb(217, 83, 79);
-      border-color: rgb(212, 63, 58);
-  }
-
-  /*** Tab's Style ***/
-  .bhoechie-tab-content {
-    display: none;
-  }
-
-  .bhoechie-tab-content.active {
-    display: block;
-  }
+  
 </style>
 
 <!-- Jquery CDN -->
@@ -185,7 +153,7 @@ if ($motherDeceased == 1) {
           <p>
             There is no need to complete this application in one sitting. Your work will be saved as you go. Feel free to log out at any time. Your information will be ready and waiting for you when you return.
           </p>
-          <h4 style="margin-top: 0;color:#55518a">Need Help?</h2>
+          <h4 style="margin-top: 0;color:#55518a">Need Help?</h4>
           <p>
             If you need help feel free to call one of our expert admissions advisors at (866) 280-1930.
           </p>
@@ -208,106 +176,86 @@ if ($motherDeceased == 1) {
                   </table>
 
                   <!-- Father Name -->
-                  <h4 style="margin-top: 0;color:#55518a">Father</h3>
+                  <h4 class="titlelabel">Father</h4>
                   <table border=0 class="Table">
                     <tr>
                       <td>
                         <div class="form-group">
                           First Name<br>
                           <input value="<?php echo $fatherName;?>" id="textinputFatherName" name="textinputFatherName" type="text" placeholder="" class="form-control input-md">
-                          <span class="help-block">Father</span>    
                         </div>  
                       </td>
-                      <td>&nbsp;&nbsp;&nbsp;</td>
+                      <td></td>
                       <td>
                         <!-- Text input: Father Family Name-->
                         <div class="form-group">
                           Last Name<br>
                           <input value="<?php echo $fatherFamilyName;?>"  id="textinputFatherFamilyName" name="textinputFatherFamilyName" type="text" placeholder="" class="form-control input-md">
-                          <span class="help-block">Family Name</span>    
                         </div>
                       </td>
-                    </tr>
-                    <tr>
+                      <td></td>
                       <td>
-                        <div class="checkbox">
-                          <label for="checkboxes-0">
-                            Residency Status:<br>
-                            Check any that apply.
-                          </label>
-                        </div>
-                      </td>
-                      <td>&nbsp;&nbsp;&nbsp;</td>
-                      <td>
+                        Residency Status:<br>
                         <div class="checkbox">
                           <label for="ckbFatherResidesAtHome">
                             <input type="checkbox" name="ckbFatherResidesAtHome" id="ckbFatherResidesAtHome" <?php echo $fatherResidesAtHome;?> >
                             Resides at home
                           </label>
                         </div>
-                      </td>
-                      <td>&nbsp;&nbsp;&nbsp;</td>
-                      <td>
-                        <!-- Text input: Father Family Name-->
                         <div class="checkbox">
                           <label for="ckbFatherDeceased-1">
                             <input type="checkbox" name="ckbFatherDeceased" id="ckbFatherDeceased" <?php echo $fatherDeceased;?>>
                             Deceased
                           </label>
                         </div>
+                        <p class="help-block">Check any that apply</p>
                       </td>
                     </tr>
                   </table>
-                  <br>
-                  <h4 style="margin-top: 0;color:#55518a">Mother</h3>
+                  <!-- Mother Name -->
+                  <h4 class="titlelabel">Mother</h4>
                   <table border=0 class="Table">
                     <tr>
                       <td>
                         <div class="form-group">
                           First Name<br>
-                          <input id="textinputMotherName" value="<?php echo $motherName;?>" name="textinputMotherName" type="text" placeholder="" class="form-control input-md"><span class="help-block">Mother</span>  
+                          <input id="textinputMotherName" value="<?php echo $motherName;?>" name="textinputMotherName" type="text" placeholder="" class="form-control input-md">  
                         </div>  
                       </td>
-                      <td>&nbsp;&nbsp;&nbsp;</td>
+                      <td></td>
                       <td>
                         <!-- Text input-->
                         <div class="form-group">
                           Last Name<br>
-                          <input value="<?php echo $motherFamilyName;?>"  id="textinputMotherFamilyName" name="textinputMotherFamilyName" type="text" placeholder="" class="form-control input-md"><span class="help-block">Family Name</span>  
+                          <input value="<?php echo $motherFamilyName;?>"  id="textinputMotherFamilyName" name="textinputMotherFamilyName" type="text" placeholder="" class="form-control input-md">
                         </div>
                       </td>
-                    </tr>
-                    <tr>
+                      <td></td>
                       <td>
-                        <div class="checkbox">
-                          <label for="checkboxes-0">
-                            Residency Status:<br>
-                            Check any that apply.
-                          </label>
-                        </div>
-                      </td>
-                      <td>&nbsp;&nbsp;&nbsp;</td>
-                      <td>
+                        Residency Status:<br>
                         <div class="checkbox">
                           <label for="ckbMotherResidesAtHome">
                             <input type="checkbox" name="ckbMotherResidesAtHome" id="ckbMotherResidesAtHome" <?php echo $motherResidesAtHome;?> >
                             Resides at home
                           </label>
                         </div>
-                      </td>
-                      <td>&nbsp;&nbsp;&nbsp;</td>
-                      <td>
-                        <!-- Text input: Father Family Name-->
                         <div class="checkbox">
                           <label for="ckbMotherDeceased">
                             <input type="checkbox" name="ckbMotherDeceased" id="ckbMotherDeceased" <?php echo $motherDeceased;?> >
                             Deceased
                           </label>
                         </div>
+                        <p class="help-block">Check any that apply</p>
                       </td>
                     </tr>
                   </table>
-
+                  <!-- Home Address -->
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                      <h4 class="titlelabel">Home Address</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6"></div>
+                  </div>
                 </fieldset>
               </form>
         </div>
