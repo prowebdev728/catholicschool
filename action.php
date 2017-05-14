@@ -4,10 +4,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="style.css">
 
-<style type="text/css">
-  
-</style>
-
 <!-- Jquery CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
@@ -102,10 +98,10 @@ if ($motherDeceased == 1) {
   <div class="col-sm-12">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
       <div class="list-group">
-        <a href="#" class="list-group-item active text-left">
+        <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-info-sign"></h4>&nbsp;&nbsp;&nbsp;Introduction
         </a>
-        <a href="#" class="list-group-item text-left">
+        <a href="#" class="list-group-item active text-left">
           <h4 class="glyphicon glyphicon-home"></h4>&nbsp;&nbsp;&nbsp;Household Information
         </a>
         <a href="#" class="list-group-item text-left">
@@ -130,7 +126,7 @@ if ($motherDeceased == 1) {
     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 bhoechie-tab">
 
         <!-- Introduction section -->
-        <div class="bhoechie-tab-content active">
+        <div class="bhoechie-tab-content">
           <h2 style="margin-top: 0;color:#55518a">Introduction to the Application Process</h2>
           <p>
             The enrollment process generally follows the steps below. However if you are a returning family, much of the information will already be there and all you need to do is update it.
@@ -160,7 +156,7 @@ if ($motherDeceased == 1) {
         </div>
 
         <!-- Household Information section -->
-        <div class="bhoechie-tab-content">
+        <div class="bhoechie-tab-content active">
             <h3 style="margin-top: 0;color:#55518a">Family Information</h3>
               <form>
                 <fieldset>
@@ -253,8 +249,90 @@ if ($motherDeceased == 1) {
                   <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
                       <h4 class="titlelabel">Home Address</h4>
+                      <div class="homeaddress">
+                        <div class="form-group" style="margin-top: 25px;">
+                          Street Address<br>
+                          <input id="homeaddress-streetaddress1" value="" type="text" class="form-control input-md">  
+                        </div>
+                        <div class="form-group">
+                          <input id="homeaddress-streetaddress2" value="" type="text" class="form-control input-md">  
+                        </div>
+                        <div class="form-group">
+                          <div class="homeaddress-city">
+                            City<br>
+                            <input id="homeaddress-city" value="" type="text" class="form-control">
+                          </div>
+                          <div class="homeaddress-state">
+                            State<br>
+                            <input id="homeaddress-state" value="" type="text" class="form-control">
+                          </div>
+                          <div class="homeaddress-zipcode">
+                            Zip Code<br>
+                            <input id="homeaddress-zipcode" value="" type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="homeaddress-country">
+                            Country<br>
+                            <input id="homeaddress-country" value="" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6"></div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                      <h4 class="titlelabel">Shipping Address</h4>
+                      <div class="shippingaddress">
+                        <div class="form-group" style="margin-bottom: 0px">
+                          <input type="checkbox" id="ckbShipHomeAddress" checked />
+                          Ship to Home Address
+                        </div>
+                        <div class="form-group">
+                          Street Address<br>
+                          <input id="shippingaddress-streetaddress1" value="" type="text" class="form-control">  
+                        </div>
+                        <div class="form-group">
+                          <input id="shippingaddress-streetaddress2" value="" type="text" class="form-control">  
+                        </div>
+                        <div class="form-group">
+                          <div class="shippingaddress-city">
+                            City<br>
+                            <input id="shippingaddress-city" value="" type="text" class="form-control">
+                          </div>
+                          <div class="shippingaddress-state">
+                            State<br>
+                            <input id="shippingaddress-state" value="" type="text" class="form-control">
+                          </div>
+                          <div class="shippingaddress-zipcode">
+                            Zip Code<br>
+                            <input id="shippingaddress-zipcode" value="" type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="shippingaddress-country">
+                            Country<br>
+                            <input id="shippingaddress-country" value="" type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Contact Information -->
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                      <h4 class="titlelabel">Contact Information</h4>
+                      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                          Phone Number<br>
+                          <input id="phonenumber" value="" type="text" class="form-control">
+                      </div>
+                      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                          Alternate Phone Number<br>
+                          <input id="altphonenumber" value="" type="text" class="form-control">
+                      </div>
+                      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                          Email Address<br>
+                          <input id="emailaddress" value="" type="text" class="form-control">
+                      </div>
+                    </div>
                   </div>
                 </fieldset>
               </form>
@@ -316,12 +394,37 @@ if ($motherDeceased == 1) {
 
 $(document).ready(function() {
     $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
-        e.preventDefault();
-        $(this).siblings('a.active').removeClass("active");
-        $(this).addClass("active");
-        var index = $(this).index();
-        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+      e.preventDefault();
+      $(this).siblings('a.active').removeClass("active");
+      $(this).addClass("active");
+      var index = $(this).index();
+      $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+      $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+    });
+
+    //Set the props of input boxes in Shipping Address
+    if ( $("#ckbShipHomeAddress").prop('checked') ) {
+      $(".shippingaddress input").prop("readonly", true);
+    }
+    
+    //when check "Ship to Home Address"
+    $("#ckbShipHomeAddress").on("change ", function(e) {
+      e.preventDefault();
+      if ( $(this).prop('checked') ) {
+        $(".shippingaddress input").prop("readonly", true);
+      } else {
+        $(".shippingaddress input").prop("readonly", false);
+      }
+    });
+
+    //key event of input boxes in Home Address
+    $(".homeaddress input").on("keyup", function(e) {
+      e.preventDefault();
+      if ( $("#ckbShipHomeAddress").prop('checked') ) {
+        id = $(this).attr("id");
+        targetId = "shippingaddress" + id.substr(id.indexOf("-"));
+        $("#"+targetId).val($(this).val());
+      }
     });
 });
 
@@ -381,7 +484,6 @@ function showStudent(email) {
   }
   xmlhttp.open("GET","StudentTabs.php?email=" + email,true);
   xmlhttp.send();
-
 }
 
 function addStudent(){
@@ -429,7 +531,6 @@ function addStudent(){
 
   //remove the Student Tab
   //document.getElementById('studentNavTab').remove();
-
 }
 
 // This jQuery script validate the fields
@@ -437,43 +538,45 @@ function addStudent(){
 $(document).ready(function() {
 
     $('.input-group input[required], .input-group textarea[required], .input-group select[required]').on('keyup change', function() {
-    var $form = $(this).closest('form'),
-            $group = $(this).closest('.input-group'),
-      $addon = $group.find('.input-group-addon'),
-      $icon = $addon.find('span'),
-      state = false;
-            
-      if (!$group.data('validate')) {
-      state = $(this).val() ? true : false;
-    }else if ($group.data('validate') == "email") {
-      state = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($(this).val())
-    }else if($group.data('validate') == 'phone') {
-      state = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test($(this).val())
-    }else if ($group.data('validate') == "length") {
-      state = $(this).val().length >= $group.data('length') ? true : false;
-    }else if ($group.data('validate') == "number") {
-      state = !isNaN(parseFloat($(this).val())) && isFinite($(this).val());
-    }
+        var $form = $(this).closest('form'),
+        $group = $(this).closest('.input-group'),
+        $addon = $group.find('.input-group-addon'),
+        $icon = $addon.find('span'),
+        state = false;
 
-    if (state) {
-        $addon.removeClass('danger');
-        $addon.addClass('success');
-        $icon.attr('class', 'glyphicon glyphicon-ok');
-    }else{
-        $addon.removeClass('success');
-        $addon.addClass('danger');
-        $icon.attr('class', 'glyphicon glyphicon-remove');
-    }
-        
-        if ($form.find('.input-group-addon.danger').length == 0) {
-            $form.find('[type="submit"]').prop('disabled', false);
+        if (state) {
+          $addon.removeClass('danger');
+          $addon.addClass('success');
+          $icon.attr('class', 'glyphicon glyphicon-ok');
+          $addon = $group.find('.input-group-addon'),
+          $icon = $addon.find('span'),
+          state = false;
+                  
+          if (!$group.data('validate')) {
+            state = $(this).val() ? true : false;
+          }else if ($group.data('validate') == "email") {
+            state = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test($(this).val())
+          }else if($group.data('validate') == 'phone') {
+            state = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test($(this).val())
+          }else if ($group.data('validate') == "length") {
+            state = $(this).val().length >= $group.data('length') ? true : false;
+          }else if ($group.data('validate') == "number") {
+            state = !isNaN(parseFloat($(this).val())) && isFinite($(this).val());
+          }
         }else{
-            $form.find('[type="submit"]').prop('disabled', true);
+          $addon.removeClass('success');
+          $addon.addClass('danger');
+          $icon.attr('class', 'glyphicon glyphicon-remove');
+        }
+            
+        if ($form.find('.input-group-addon.danger').length == 0) {
+          $form.find('[type="submit"]').prop('disabled', false);
+        }else{
+          $form.find('[type="submit"]').prop('disabled', true);
         }
     });
     
     $('.input-group input[required], .input-group textarea[required], .input-group select[required]').trigger('change');
-
 
 });
 
