@@ -94,37 +94,29 @@ function getStudent($email) {
 
 // Insert student
 
-function insertStudent($conn, $email, $studentFirstName, $studentMI, $studentLastname, $studentEucharist, $studentPenance, $studentConfirmation, $studentGrade, $studentDateBirth) {
+function insertStudent($data) {
 
   require("db_connection.php");
 
   $sql= "INSERT INTO student ( 
-            email, 
-            first_name, 
-            mi, 
-            last_name, 
-            eucharist, 
-            penance, 
-            confirmation, 
-            grade, 
+            email,
+            first_name,
+            mi,
+            last_name,
+            grade,
             date_birth
-            ) 
+          ) 
           VALUES (
-            '$email', 
-            '$studentFirstName', 
-            '$studentMI', 
-            '$studentLastname', 
-            $studentEucharist, 
-            $studentPenance, 
-            $studentConfirmation, 
-            '$studentGrade', 
-            $studentDateBirth
-            )";
-
-            //echo $sql;
+            '{$data['email']}', 
+            '{$data['first_name']}',
+            '{$data['mi']}',
+            '{$data['last_name']}',
+            '{$data['grade']}',
+            '{$data['date_birth']}'
+          )";
 
   //Checking the results
-  if ($conn->query($sql) === TRUE) {
+  if ($conn->query($sql) === true) {
     return true;
   } else {
     echo "Error inserting record: " . $conn->error;

@@ -3,26 +3,22 @@
 include 'db_functions.php';
 
 //receiving the parameters by query string
+$data = array();
+$data['email'] = $_POST['email'];
+$data['first_name'] = $_POST['studentFirstName'];
+$data['mi'] = $_POST['studentMI'];
+$data['last_name'] = $_POST['studentLastName'];
+$data['grade'] = $_POST['studentGrade'];
+$data['date_birth'] = $_POST['studentDateBirth'];
 
-$studentFirstName = ($_GET['studentFirstName']);
-$studentMI = ($_GET['studentMI']);
-$studentLastname = ($_GET['studentLastname']);
-$studentEucharist = ($_GET['studentEucharist']);
-$studentPenance = ($_GET['studentPenance']);
-$studentPenance = ($_GET['studentPenance']);
-$studentConfirmation = ($_GET['studentConfirmation']);
-$studentGrade = ($_GET['studentGrade']);
-$studentDateBirth = ($_GET['studentDateBirth']);
-$email = ($_GET['email']);
-
-$resultInsertStudent = FALSE;
-$resultInsertStudent = insertStudent($conn, $email, $studentFirstName, $studentMI, $studentLastname, $studentEucharist, $studentPenance, $studentConfirmation, $studentGrade, $studentDateBirth);
+$resultInsertStudent = false;
+$resultInsertStudent = insertStudent($data);
 
 //Checking the results
-if ($resultInsertStudent === TRUE) {
-    echo "Record inserted successfully";
+if ($resultInsertStudent === true) {
+   echo "Record inserted successfully";
 } else {
-    echo "Error inserting record: ";
+   echo "Error inserting record: ";
 }
 
 ?>
