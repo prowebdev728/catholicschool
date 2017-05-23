@@ -39,7 +39,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="verticalTab.css">
+  <!-- <link rel="stylesheet" href="verticalTab.css"> -->
 </head>
 <body>
 

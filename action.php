@@ -89,7 +89,7 @@ if ($motherDeceased == 1) {
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="verticalTab.css">
+  <!-- <link rel="stylesheet" href="verticalTab.css"> -->
 </head>
 <body>
 <div class="container-fluid">
@@ -489,7 +489,7 @@ function showStudent(email) {
     $("#StudentTabsPlaceHolder").html("");
     return;
   }
-
+  
   $.ajax({
     type: "GET",
     url: "StudentTabs.php",
@@ -501,11 +501,11 @@ function showStudent(email) {
     }, 
     error: function() {
       $('#StudentTabsPlaceHolder').html('<p>An error has occurred</p>');
-   },
+    },
   });
 }
 
-function addStudent(){
+/*function addStudent(){
 
   //get the parameters
   var email = document.getElementById('textinputEmail').value;
@@ -550,7 +550,7 @@ function addStudent(){
 
   //remove the Student Tab
   //document.getElementById('studentNavTab').remove();
-}
+}*/
 
 // This jQuery script validate the fields
 
