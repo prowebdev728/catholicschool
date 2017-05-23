@@ -1,149 +1,82 @@
+
 <?php
 
 include 'db_functions.php';
 
-function printStudentContent($rowNumber, $studentId, $studentFirstName, $studentMI, $studentLastName, $studentEucharist, $studentPenance, $studentConfirmation, $studentGrade, $studentDateBirth) {
-
-
-  $active = "";
-  if ($rowNumber==1) 
-  {
-    $active = "fade active in";
-  } 
-
-  if ($studentEucharist == 1) {
-    $studentEucharist = "checked";
-  } else {
-    $studentEucharist = "";
-  }
-
-  if ($studentPenance == 1) {
-    $studentPenance = "checked";
-  } else {
-    $studentPenance = "";
-  }
-
-  if ($studentConfirmation == 1) {
-    $studentConfirmation = "checked";
-  } else {
-    $studentConfirmation = "";
-  }
-
-  
-  $result = "<div id='student" . $studentId . "' class='tab-pane " . $active . "'>
-
-        <table border=0 class='Table table-striped'>
-
-          <tr> 
-            <td>
-              Sacraments Received:
-            </td>    
-
-            <td>
-              <input type=checkbox name=ckbEucharist id=ckbEucharist $studentEucharist>
-              Eucharist
-            </td>    
-
-            <td>
-              <input type=checkbox name=ckbPenance id=ckbPenance $studentPenance>
-              Penance
-            </td>                
-            <td>
-              <input type=checkbox name=ckbConfirmation id=ckbConfirmation $studentConfirmation>
-              Confirmation
-            </td>    
-          </tr>
-          <tr> 
-            <td colspan=100%>Grade: $studentGrade</td>    
-          </tr>
-          <tr> 
-            <td colspan=100%>Date of Birth: $studentDateBirth</td>    
-          </tr>
-        </table>    
-    </div>";
-
-  return $result;
-}
-
-//variables for each student field
-
+//email
 $studentEmail = ($_GET['email']);
-$studentId = "";
-$studentFirstName = "";
-$studentMI = "";
-$studentLastName = "";
-$studentEucharist = "";
-$studentPenance = "";
-$studentConfirmation = "";
-$studentGrade = "";
-$studentDateBirth = "";
 
 $result = getStudent($studentEmail);
 
-$rowNumber = 0;
+$res = "<ul id='studenteNavTab' class='nav nav-tabs'>";
+$tabContent = "";
 
-echo "<ul id=studenteNavTab class='nav nav-tabs'>";
+$i = 0;
+if ($result->num_rows > 0) {
+  while ($row = $result->fetch_assoc()) {
+    $res .= "<li class='". ($i ? "" : "active") ."'><a data-toggle='tab' href='#student". $row['id'] ."'>". $row['first_name'] ." ". $row['mi'] ." ". $row['last_name'] ."</a></li>";
 
-if ($result->num_rows > 0) 
-{
-    while ($row = $result->fetch_assoc())
-    {
-      $studentId = $row["id"];
-      $studentFirstName = $row["first_name"];
-      $studentMI = $row["mi"];
-      $studentLastName = $row["last_name"];
-      $studentEucharist = $row["eucharist"];
-      $studentPenance = $row["penance"];
-      $studentConfirmation = $row["confirmation"];
-      $studentGrade = $row["grade"];
-      $studentDateBirth = $row["date_birth"];
+    $tabContent .= "<div id='student". $row['id'] ."' class='". ($i ? "tab-pane" : "tab-pane fade active in") ."'>". $row['first_name'] ." ". $row['mi'] ." ". $row['last_name'] ."</div>";
 
-      $active = "";
-      $rowNumber = $rowNumber + 1;
-      if ($rowNumber==1) 
-      {
-        $active = "active";
-      } 
-
-      echo "<li class=" . $active . "><a data-toggle='tab' href='#student" . $studentId . "'>" . $studentFirstName . " " . $studentMI . " " . $studentLastName . "</a></li>";
-    }
+    $i++;
+  }
 }
 
-echo "</ul>";
-echo "<br>";
-echo "<div class='tab-content'>";  
+$res .= "<li class=''><a data-toggle='tab' href='#studentAdd'>Add Student</a></li>"; //Add Student Tab
+$res .= "</ul>";
+$res .= "<br>";
 
-$resultContent = getStudent($studentEmail);
-$rowNumber = 0;
+$res .= "<div class='tab-content'>";
+$res .= $tabContent;
+$res .= "
+<div id='studentAdd' class='tab-pane'>
+  <div class='form-group col-md-4'>
+    First Name<br>
+    <input value='' id='' name='' type='text' placeholder='required' class='form-control'>
+  </div>
+  <div class='form-group col-md-1'>
+    M.I.<br>
+    <input value='' id='' name='' type='text' placeholder='' class='form-control'>
+  </div>
+  <div class='form-group col-md-4'>
+    Last Name<br>
+    <input value='' id='' name='' type='text' placeholder='required' class='form-control'>
+  </div>
+  <div class='form-group col-md-4'>
+    Date of Birth<br>
+    <div class='form-group'>
+        <div class='input-group date' id='datepicker'>
+            <input type='text' class='form-control' />
+            <span class='input-group-addon'>
+                <span class='glyphicon glyphicon-calendar'></span>
+            </span>
+        </div>
+    </div>
+  </div>
+</div>
+";
+$res .= "</div>";
 
-if ($resultContent->num_rows > 0) 
-{
-    while ($row = $resultContent->fetch_assoc())
-    {
-      $studentId = $row["id"];
-      $studentFirstName = $row["first_name"];
-      $studentMI = $row["mi"];
-      $studentLastName = $row["last_name"];
-      $studentEucharist = $row["eucharist"];
-      $studentPenance = $row["penance"];
-      $studentConfirmation = $row["confirmation"];
-      $studentGrade = $row["grade"];
-      $studentDateBirth = $row["date_birth"];
-
-      $rowNumber = $rowNumber + 1;
-      echo printStudentContent($rowNumber, $studentId, $studentFirstName, $studentMI, $studentLastName, $studentEucharist, $studentPenance, $studentConfirmation, $studentGrade, $studentDateBirth);
-      
-    }
-}
-
-echo "</div><br>";  
-
-echo "<div align=center>";
-echo "<table width=70%><tr>";
-echo "<td><button type=button class='btn btn-primary' disabled>&nbsp;&nbsp;New&nbsp;&nbsp;</button></td>";
-echo "<td><button type=button class='btn btn-primary' disabled>Update</button></td>";
-echo "<td><button type=button class='btn btn-primary' disabled>Delete</button></td>";
-echo "</tr></table>";
-echo "</div>";  
+echo $res;
 
 ?>
+<script>
+  $(document).ready(function(){
+    var start = moment().subtract(5, 'years');
+    var end = moment();
+    var options={
+      format: 'MM/DD/YYYY',
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoclose: true,
+      startDate: start,
+      "maxDate": start,
+    };
+    $('#datepicker').daterangepicker(
+      options, 
+      function(start, end, label) {
+          $('#datepicker input').val(start.format('MM/DD/YYYY'))
+      }
+    );
+  })
+</script>

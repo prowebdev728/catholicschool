@@ -10,6 +10,13 @@
 <!-- Bootstrap CDN -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+ -->
 <?php
 
 include 'db_functions.php';
@@ -48,7 +55,6 @@ if ($result->num_rows > 0) {
     $motherFamilyName = $row["mother_family_name"];
     $motherResidesAtHome = $row["mother_resides_at_home"];
     $motherDeceased = $row["mother_deceased"];
-
 } else {
     
     insertUser($email, $fatherName, $fatherFamilyName, $motherName, $motherFamilyName, $fatherResidesAtHome, $fatherDeceased, $motherResidesAtHome, $motherDeceased);
@@ -88,7 +94,8 @@ if ($motherDeceased == 1) {
 <body>
 <div class="container-fluid">
   <!-- Header-->
-  <div class="jumbotron">
+  <!-- <div class="jumbotron"> -->
+  <div>
     <div class="container">
       <h3 class="display-2">Home Study Catholic School</h3>
     </div>
@@ -101,10 +108,10 @@ if ($motherDeceased == 1) {
         <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-info-sign"></h4>&nbsp;&nbsp;&nbsp;Introduction
         </a>
-        <a href="#" class="list-group-item active text-left">
+        <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-home"></h4>&nbsp;&nbsp;&nbsp;Household Information
         </a>
-        <a href="#" class="list-group-item text-left">
+        <a href="#" class="list-group-item active text-left">
           <h4 class="glyphicon glyphicon-user"></h4>&nbsp;&nbsp;&nbsp;Student Information
         </a>
         <a href="#" class="list-group-item text-left">
@@ -156,7 +163,7 @@ if ($motherDeceased == 1) {
         </div>
 
         <!-- Household Information section -->
-        <div class="bhoechie-tab-content active">
+        <div class="bhoechie-tab-content">
             <h3 style="margin-top: 0;color:#55518a">Family Information</h3>
               <form>
                 <fieldset>
@@ -339,7 +346,7 @@ if ($motherDeceased == 1) {
         </div>
 
         <!-- Student section -->
-        <div class="bhoechie-tab-content">
+        <div class="bhoechie-tab-content active">
             <h3 style="margin-top: 0;color:#55518a">Student Information</h3>
             <p>
               This section shows the students who are being enrolled with this application and the details of their enrollment. Use the 'Add Student' tab to enroll a new or previously enrolled student.
@@ -347,7 +354,7 @@ if ($motherDeceased == 1) {
             <p>
               Once you have indicated who will be enrolling, you will be able to select each student's courses in the next section. You may return to this section at any time to add or remove students.
             </p>    
-            <p id=StudentTabsPlaceHolder>
+            <p id="StudentTabsPlaceHolder">
               <b>StudentTabsPlaceHolder</b>      
             </p>
         </div>
@@ -391,7 +398,6 @@ if ($motherDeceased == 1) {
 <script>
 
 //This script handle the tab's navigation
-
 $(document).ready(function() {
     $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
       e.preventDefault();
@@ -401,14 +407,18 @@ $(document).ready(function() {
       $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
       $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
     });
+});
 
+// Household Information
+
+$(document).ready(function() {
     //Set the props of input boxes in Shipping Address
     if ( $("#ckbShipHomeAddress").prop('checked') ) {
       $(".shippingaddress input").prop("readonly", true);
     }
     
     //when check "Ship to Home Address"
-    $("#ckbShipHomeAddress").on("change ", function(e) {
+    $("#ckbShipHomeAddress").on("change", function(e) {
       e.preventDefault();
       if ( $(this).prop('checked') ) {
         $(".shippingaddress input").prop("readonly", true);
@@ -428,12 +438,10 @@ $(document).ready(function() {
     });
 });
 
-// Timer to auto update the database
-
+//Timer to auto update the database for Household Information
 setInterval("updateFamilyData();",10000);
 
 //This function request an Ajax Call to update the database's user table
-
 function updateFamilyData(){
 
   //get the parameters
@@ -470,20 +478,31 @@ function updateFamilyData(){
   xmlhttp.send();
 }
 
-function showStudent(email) {
+// Student Information
 
-  if (email=="") {
-    document.getElementById("StudentTabsPlaceHolder").innerHTML="";
+$(document).ready(function() {  
+  showStudent(document.getElementById('textinputEmail').value);
+});
+
+function showStudent(email) {
+  if (email == "") {
+    $("#StudentTabsPlaceHolder").html("");
     return;
-  } 
-  xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange=function() {
-    if (this.readyState==4 && this.status==200) {
-      document.getElementById("StudentTabsPlaceHolder").innerHTML=this.responseText;
-    }
   }
-  xmlhttp.open("GET","StudentTabs.php?email=" + email,true);
-  xmlhttp.send();
+
+  $.ajax({
+    type: "GET",
+    url: "StudentTabs.php",
+    data: {
+      email: email
+    },
+    success: function(result) {
+      $("#StudentTabsPlaceHolder").html(result);
+    }, 
+    error: function() {
+      $('#StudentTabsPlaceHolder').html('<p>An error has occurred</p>');
+   },
+  });
 }
 
 function addStudent(){
@@ -577,12 +596,6 @@ $(document).ready(function() {
     });
     
     $('.input-group input[required], .input-group textarea[required], .input-group select[required]').trigger('change');
-
-});
-
-$(document).ready(function() 
-{  
-  showStudent(document.getElementById('textinputEmail').value);
 });
 
 </script>
