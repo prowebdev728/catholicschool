@@ -24,6 +24,16 @@
   border-color: rgb(212, 63, 58);
 }
 
+/*** Button Style ***/
+.btn-opt.active, 
+.btn-opt.active:hover,
+.btn-opt.active:active,
+.btn-opt.active:focus {
+  color: #fff;
+  background-color: #3f8b3f;
+  border-color: #398439;
+}
+
 /*** Tab's Style ***/
 .bhoechie-tab-content {
   display: none;
@@ -64,4 +74,40 @@ table.table {
 }
 .homeaddress-country, .shippingaddress-country {
 	margin-left: 52%;
+}
+
+/*** Student Infomation ***/
+.student-name-bar {
+  height: 40px;
+  margin: 0 0 10px 15px;
+  border-bottom: 1px solid #bbb;
+}
+.student-name-bar label {
+  font-size: 22px;
+  font-weight: normal;
+}
+.student-name-bar button {
+  float: right;
+  margin-left: 15px;
+}
+.student-birth-grade {
+  margin: 0 0 30px 15px;
+  font-size: 15px;
+  font-weight: normal;
+  color: #555;
+}
+.student-birth-grade label:nth-child(2) {
+  margin-left: 35px;
+}
+.student-enrollmentoptions {
+  width: 50%;
+  margin: 0 0 10px 15px;
+  border-bottom: 1px solid #bbb;
+  font-size: 18px;
+}
+.student-enrollmenttype label{
+  margin: 0 0 10px 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555;
 }

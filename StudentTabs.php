@@ -17,12 +17,23 @@ if ($result->num_rows > 0) {
     $tabContent .= "<div id='student{$row['id']}' class='". ($i ? "tab-pane" : "tab-pane fade active in") ."'>";
     $tabContent .= "
       <div class='form-group'>
-        <div class='col-md-8'>
-          <h3 class='titlelabel'> {$row['first_name']} {$row['mi']} {$row['last_name']}</h3>
-        </div>
-        <div class='col-md-4'>
-          <button id='btnEditStudent' studentid='{$row['id']}' type='button' class='btn btn-primary'><span class='glyphicon glyphicon-pencil'></span> Edit</button>
+        <div class='student-name-bar'>
+          <label> {$row['first_name']} {$row['mi']} {$row['last_name']}</label>
           <button type='button' class='btn btn-warning' onclick='removeStudent(event, {$row['id']})'><span class='glyphicon glyphicon-remove'></span> Remove</button>
+          <button id='btnEditStudent' studentid='{$row['id']}' type='button' class='btn btn-primary'><span class='glyphicon glyphicon-pencil'></span> Edit</button>
+        </div>
+        <div class='student-birth-grade'>
+          <label>Date of Birth</label>: {$row['date_birth']} <label>Grade</label>: {$row['grade']}
+        </div>
+        <div class='student-enrollmentoptions'>
+          Enrollment Options
+        </div>
+        <div class='student-enrollmenttype'>
+          <label>Enrollment Type</label>:
+          <div class='btn-group btn-group-sm' role='group'>
+            <button type='button' class='btn btn-default btn-opt active'>Full Curriculum</button>
+            <button type='button' class='btn btn-default btn-opt'>Individual Courses</button>
+          </div>
         </div>
       </div>
     ";
@@ -90,6 +101,24 @@ $res .= "
     </div>
   </div>
 ";
+// Modal /
+$res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        <h4 class='modal-title' id='myModalLabel'>Modal title</h4>
+      </div>
+      <div class='modal-body'>
+        ...
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+        <button type='button' class='btn btn-primary'>Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>";
 $res .= "</div>";
 
 echo $res;
@@ -127,14 +156,21 @@ echo $res;
       e.preventDefault();
       $('#studenteNavTab li:first-child a').trigger('click');
     });
+    // Enrollment Type
+    $('.btn-group .btn-opt').on('click', function(e) {
+      e.preventDefault();
+      $(this).parent().find('.btn-opt.active').removeClass('active');
+      $(this).addClass('active');
+    });
   })
 
   // Add Student
   function addStudent() {
     $.ajax({
       type: "POST",
-      url: "process_ajax_addStudent.php",
+      url: "process_ajax_student.php",
       data: {
+        proc: 'addStudent',
         email: $('#textinputEmail').val(),
         studentFirstName: $('#studentFirstName').val(),
         studentMI: $('#studentMI').val(),
@@ -143,6 +179,7 @@ echo $res;
         studentDateBirth: $('#studentBirthdayDatepicker input').val()
       },
       success: function(result) {
+        console.log(result);
         $('#studentAdd input, #studentAdd select').val('');
         showStudent($('#textinputEmail').val()); // reload student tabs
       }, 
@@ -154,10 +191,32 @@ echo $res;
   // Remove Student
   function removeStudent(event, studentId) {
     event.preventDefault();
+    
     $.ajax({
-      type: "DELETE",
-      url: "process_ajax_addStudent.php",
+      type: "POST",
+      url: "process_ajax_student.php",
       data: {
+        proc: 'removeStudent',
+        studentId: studentId
+      },
+      success: function(result) {
+        console.log(result)
+        showStudent($('#textinputEmail').val()); // reload student tabs
+      }, 
+      error: function() {
+        console.log('An error has occurred when save in Student Tab');
+      },
+    });
+  }
+  // Delete Student
+  function deleteStudent(event, studentId) {
+    event.preventDefault();
+    
+    $.ajax({
+      type: "POST",
+      url: "process_ajax_student.php",
+      data: {
+        proc: 'deleteStudent',
         studentId: studentId
       },
       success: function(result) {

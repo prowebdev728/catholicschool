@@ -7,16 +7,16 @@
 <!-- Jquery CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+<script src="include.js"></script>
+
 <!-- Bootstrap CDN -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <!-- Include Date Range Picker -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<script src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
- -->
+
 <?php
 
 include 'db_functions.php';
@@ -504,53 +504,6 @@ function showStudent(email) {
     },
   });
 }
-
-/*function addStudent(){
-
-  //get the parameters
-  var email = document.getElementById('textinputEmail').value;
-
-  var studentFirstName = document.getElementById('studentFirstName').value;
-  var studentMI = document.getElementById('studentMI').value;
-  var studentLastname = document.getElementById('studentLastName').value;
-  var studentEucharist = document.getElementById('ckbStudentEucharist').checked;
-  var studentPenance = document.getElementById('ckbStudentPenance').checked;
-  var studentConfirmation = document.getElementById('ckbStudentConfirmation').checked;
-  var studentGrade = document.getElementById('selectGrade').value;
-  var studentDateBirth = document.getElementById('studentDateBirth').value;
-
-  // prepare the ajax call to update the database
-  var xmlhttp = new XMLHttpRequest();
-  var url = "process_ajax_addStudent.php";
-  
-  var params = "";
-  params = params.concat('email', "=", email, "&");
-  params = params.concat('studentFirstName', "=", studentFirstName , "&");
-  params = params.concat('studentMI', "=", studentMI , "&");
-  params = params.concat('studentLastname', "=", studentLastname , "&");
-  params = params.concat('studentEucharist', "='", studentEucharist , "'&");
-  params = params.concat('studentPenance', "='", studentPenance , "'&");
-  params = params.concat('studentConfirmation', "=", studentConfirmation, "&");
-  params = params.concat('studentGrade', "=", studentGrade, "&");
-  params = params.concat('studentDateBirth', "=", studentDateBirth);
-
-  url = url.concat("?", params);
-
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
-
-  document.getElementById('studentFirstName').value = "";
-  document.getElementById('studentMI').value = "";
-  document.getElementById('studentLastName').value  ="";
-  document.getElementById('ckbStudentEucharist').unchecked;
-  document.getElementById('ckbStudentPenance').unchecked;
-  document.getElementById('ckbStudentConfirmation').unchecked;
-  document.getElementById('selectGrade').value = "";
-  document.getElementById('studentDateBirth').value = "";
-
-  //remove the Student Tab
-  //document.getElementById('studentNavTab').remove();
-}*/
 
 // This jQuery script validate the fields
 
