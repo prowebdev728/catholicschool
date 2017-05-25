@@ -124,4 +124,31 @@ function insertStudent($data) {
   }
 }
 
+function removeStudent($id) {
+  require("db_connection.php");
+
+  $sql = "UPDATE student SET  WHERE id='{$id}'";
+
+  if ($conn->query($sql) === true) {
+    return true;
+  } else {
+    echo "Delete Error: " . $conn->error;
+    return false;
+  }
+}
+
+
+function deleteStudent($id) {
+  require("db_connection.php");
+
+  $sql = "DELETE FROM student WHERE id='{$id}'";
+
+  if ($conn->query($sql) === true) {
+    return true;
+  } else {
+    echo "Delete Error: " . $conn->error;
+    return false;
+  }
+}
+
 ?>
