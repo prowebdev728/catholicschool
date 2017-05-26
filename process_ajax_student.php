@@ -18,7 +18,6 @@ if ($proc === 'addStudent') {
 	$status = insertStudent($data);
 	echo $status;
 } else if ($proc === 'removeStudent') {
-	$data = array();
 	$id = $_POST['studentId'];
 	
 	$status = removeStudent($id);

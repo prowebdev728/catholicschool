@@ -15,8 +15,7 @@ if ($result->num_rows > 0) {
     $res .= "<li class='". ($i ? "" : "active") ."'><a data-toggle='tab' href='#student{$row['id']}'>{$row['first_name']} {$row['mi']} {$row['last_name']}</a></li>";
 
     $tabContent .= "<div id='student{$row['id']}' class='". ($i ? "tab-pane" : "tab-pane fade active in") ."'>";
-    $tabContent .= "
-      <div class='form-group'>
+    $tabContent .= "<div class='form-group'>
         <div class='student-name-bar'>
           <label> {$row['first_name']} {$row['mi']} {$row['last_name']}</label>
           <button type='button' class='btn btn-warning' onclick='removeStudent(event, {$row['id']})'><span class='glyphicon glyphicon-remove'></span> Remove</button>
@@ -35,8 +34,8 @@ if ($result->num_rows > 0) {
             <button type='button' class='btn btn-default btn-opt'>Individual Courses</button>
           </div>
         </div>
-      </div>
-    ";
+      </div>";
+
     $tabContent .= "</div>";
 
     $i++;
@@ -50,8 +49,7 @@ $res .= "<br>";
 $res .= "<div class='tab-content'>";
 $res .= $tabContent; // Student individual info Tab
 // Add Student Tab
-$res .= "
-  <div id='studentAdd' class='tab-pane'>
+$res .= "<div id='studentAdd' class='tab-pane'>
     <div class='form-group col-md-4'>
       First Name<br>
       <input id='studentFirstName' type='text' placeholder='required' class='form-control'>
@@ -67,12 +65,12 @@ $res .= "
     <div class='form-group col-md-4'>
       Date of Birth<br>
       <div class='form-group'>
-          <div class='input-group date' id='studentBirthdayDatepicker'>
-              <input type='text' class='form-control' />
-              <span class='input-group-addon'>
-                  <span class='glyphicon glyphicon-calendar'></span>
-              </span>
-          </div>
+        <div class='input-group date' id='studentBirthdayDatepicker'>
+          <input type='text' class='form-control' />
+          <span class='input-group-addon'>
+            <span class='glyphicon glyphicon-calendar'></span>
+          </span>
+        </div>
       </div>
     </div>
     <div class='form-group col-md-4'>
@@ -99,9 +97,9 @@ $res .= "
       <button id='btnSaveAddStudent' type='button' class='btn btn-primary'>Save</button>
       <button id='btnCancelAddStudent' type='button' class='btn btn-default'>Cancel</button>
     </div>
-  </div>
-";
-// Modal /
+  </div>";
+
+// Modal
 $res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
@@ -119,13 +117,14 @@ $res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dia
     </div>
   </div>
 </div>";
+
 $res .= "</div>";
 
 echo $res;
 
 ?>
 
-<script>
+<script type="text/javascript">
   $(document).ready(function() {
 
     // datepicker configuration
@@ -162,6 +161,10 @@ echo $res;
       $(this).parent().find('.btn-opt.active').removeClass('active');
       $(this).addClass('active');
     });
+
+    $('#studenteNavTab li').click(function(e) {
+      console.log($(this).attr('class'))
+    })
   })
 
   // Add Student
@@ -204,7 +207,7 @@ echo $res;
         showStudent($('#textinputEmail').val()); // reload student tabs
       }, 
       error: function() {
-        console.log('An error has occurred when save in Student Tab');
+        console.log('An error has occurred when remove student in Student Tab');
       },
     });
   }

@@ -84,7 +84,7 @@ function getStudent($email) {
 
   require("db_connection.php");
 
-  $sql = "SELECT * FROM student WHERE email = '$email'";
+  $sql = "SELECT * FROM student WHERE email = '$email' AND enroll_status = 1";
 
   $result = $conn->query($sql);
   $conn->close();
@@ -117,6 +117,7 @@ function insertStudent($data) {
 
   //Checking the results
   if ($conn->query($sql) === true) {
+    $conn->close();
     return true;
   } else {
     echo "Error inserting record: " . $conn->error;
@@ -127,12 +128,13 @@ function insertStudent($data) {
 function removeStudent($id) {
   require("db_connection.php");
 
-  $sql = "UPDATE student SET  WHERE id='{$id}'";
+  $sql = "UPDATE student SET enroll_status=0 WHERE id='{$id}'";
 
   if ($conn->query($sql) === true) {
+    $conn->close();
     return true;
   } else {
-    echo "Delete Error: " . $conn->error;
+    echo "Update enroll_status field Error: " . $conn->error;
     return false;
   }
 }
@@ -144,6 +146,7 @@ function deleteStudent($id) {
   $sql = "DELETE FROM student WHERE id='{$id}'";
 
   if ($conn->query($sql) === true) {
+    $conn->close();
     return true;
   } else {
     echo "Delete Error: " . $conn->error;
