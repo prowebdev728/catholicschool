@@ -111,3 +111,18 @@ table.table {
   font-weight: 600;
   color: #555;
 }
+
+.students-not-enrolled {
+  margin: 10px;
+  background-color: #ffffe0;
+  border-radius: 3px;
+  padding: 5px;
+}
+.students-not-enrolled table,
+.students-not-enrolled table th {
+  text-align: center;
+  padding: 6px;
+}
+.students-not-enrolled table td {
+  padding: 0 15px 0 15px;
+}

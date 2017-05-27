@@ -28,6 +28,12 @@ if ($proc === 'addStudent') {
 	
 	$status = removeStudent($id);
 	echo $status;
+} else if ($proc === 'getNotEnrolledStudent') {
+	$data = array();
+	$data['email'] = $_GET['email'];
+
+	$status = getNotEnrolledStudent($data);
+	echo $status;
 }
 
 

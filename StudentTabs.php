@@ -50,6 +50,7 @@ $res .= "<div class='tab-content'>";
 $res .= $tabContent; // Student individual info Tab
 // Add Student Tab
 $res .= "<div id='studentAdd' class='tab-pane'>
+  <div class='studentAddBox'>
     <div class='form-group col-md-4'>
       First Name<br>
       <input id='studentFirstName' type='text' placeholder='required' class='form-control'>
@@ -75,29 +76,36 @@ $res .= "<div id='studentAdd' class='tab-pane'>
     </div>
     <div class='form-group col-md-4'>
       Grade<br>
-      <select id='selectGrade' class='form-control'>
-        <option value=''></option>
-        <option>Pre-Kindergarten</option>
-        <option>Kindergarten</option>
-        <option>1st Grade</option>
-        <option>2nd Grade</option>
-        <option>3rd Grade</option>
-        <option>4th Grade</option>
-        <option>5th Grade</option>
-        <option>6th Grade</option>
-        <option>7th Grade</option>
-        <option>8th Grade</option>
-        <option>9th Grade</option>
-        <option>10th Grade</option>
-        <option>11th Grade</option>
-        <option>12th Grade</option>
-      </select>
+      <select id='selectGrade' class='form-control'></select>
     </div>
     <div class='form-group col-md-12'>
       <button id='btnSaveAddStudent' type='button' class='btn btn-primary'>Save</button>
       <button id='btnCancelAddStudent' type='button' class='btn btn-default'>Cancel</button>
     </div>
-  </div>";
+  </div>
+  <div class='notEnrolledstudentAddBox col-md-12'>
+    <div class='instruction'>
+      <p>The following students were previously enrolled with Seton Home Study School, or previously added to this application and then removed.  Please indicate which of them you would like to add to the application and the grade in which they will be enrolled.</p>
+      <p>Alternately, you may add a new student by clicking the \"New Student\" button.</p>
+    </div>
+    <div class='students-not-enrolled'>
+      <table>
+        <tbody><tr>
+          <th>Enrolling</th>
+          <th>Student</th>
+          <th>Grade</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td><input id='enrolling' type='checkbox'></td>
+          <td id='name'></td>
+          <td><select id='grade' class='form-control'></select></td>
+          <td><button class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>
+        </tr>
+    </tbody></table>
+    </div>
+  </div>
+</div>";
 
 // Modal
 $res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
@@ -125,110 +133,151 @@ echo $res;
 ?>
 
 <script type="text/javascript">
-  $(document).ready(function() {
+$(document).ready(function() {
+  // Insert Grade Select Element in Add Student Tab
+  insertGreadSelectElement('#studentAdd select#selectGrade');
+  // Insert Grade Select Element in table Add Student Tab When exist removed student
+  insertGreadSelectElement('.notEnrolledstudentAddBox select#grade ');
 
-    // datepicker configuration
-    var start = moment().subtract(5, 'years');
-    var end = moment();
-    var options={
-      format: 'MM/DD/YYYY',
-      singleDatePicker: true,
-      showDropdowns: true,
-      autoclose: true,
-      startDate: start,
-      "maxDate": start,
-    };
-    $('#studentBirthdayDatepicker').daterangepicker(
-      options, 
-      function(start, end, label) {
-          $('#studentBirthdayDatepicker input').val(start.format('MM/DD/YYYY'))
-      }
-    );
-
-    // Add Student
-    $('#btnSaveAddStudent').on('click', function(e) {
-      e.preventDefault();
-      addStudent();
-    });
-    // When click Cancel button, Go to first tab
-    $('#btnCancelAddStudent').on('click', function(e) {
-      e.preventDefault();
-      $('#studenteNavTab li:first-child a').trigger('click');
-    });
-    // Enrollment Type
-    $('.btn-group .btn-opt').on('click', function(e) {
-      e.preventDefault();
-      $(this).parent().find('.btn-opt.active').removeClass('active');
-      $(this).addClass('active');
-    });
-
-    $('#studenteNavTab li').click(function(e) {
-      console.log($(this).attr('class'))
-    })
-  })
+  // datepicker configuration
+  var start = moment().subtract(5, 'years');
+  var end = moment();
+  var options={
+    format: 'MM/DD/YYYY',
+    singleDatePicker: true,
+    showDropdowns: true,
+    autoclose: true,
+    startDate: start,
+    "maxDate": start,
+  };
+  $('#studentBirthdayDatepicker').daterangepicker(
+    options, 
+    function(start, end, label) {
+        $('#studentBirthdayDatepicker input').val(start.format('MM/DD/YYYY'))
+    }
+  );
 
   // Add Student
-  function addStudent() {
-    $.ajax({
-      type: "POST",
-      url: "process_ajax_student.php",
-      data: {
-        proc: 'addStudent',
-        email: $('#textinputEmail').val(),
-        studentFirstName: $('#studentFirstName').val(),
-        studentMI: $('#studentMI').val(),
-        studentLastName: $('#studentLastName').val(),
-        studentGrade: $('#selectGrade').val(),
-        studentDateBirth: $('#studentBirthdayDatepicker input').val()
-      },
-      success: function(result) {
-        console.log(result);
-        $('#studentAdd input, #studentAdd select').val('');
-        showStudent($('#textinputEmail').val()); // reload student tabs
-      }, 
-      error: function() {
-        console.log('An error has occurred when save in Add Student Tab');
-      },
-    });
+  $('#btnSaveAddStudent').on('click', function(e) {
+    e.preventDefault();
+    addStudent();
+  });
+  // When click Cancel button, Go to first tab
+  $('#btnCancelAddStudent').on('click', function(e) {
+    e.preventDefault();
+    $('#studenteNavTab li:first-child a').trigger('click');
+  });
+  // Enrollment Type
+  $('.btn-group .btn-opt').on('click', function(e) {
+    e.preventDefault();
+    $(this).parent().find('.btn-opt.active').removeClass('active');
+    $(this).addClass('active');
+  });
+
+  $('#studenteNavTab li a[href=#studentAdd]').on('click', function(e) {
+    e.preventDefault();
+    // $('#studentAdd').html('');
+
+  })
+});
+
+// Insert Grade Select Element
+function insertGreadSelectElement(selector) {
+  var gradeStr = "<option></option><option>Pre-Kindergarten</option><option>Kindergarten</option>";
+
+  for (let i = 1; i <= 12; i++) {
+    let grade = "";
+    if (i == 1) grade = "1st";
+    else if (i == 2) grade = "2nd";
+    else if (i == 3) grade = "3rd";
+    else grade = i + "th";
+
+    gradeStr += "<option>" + grade +" Grade</option>";
   }
-  // Remove Student
-  function removeStudent(event, studentId) {
-    event.preventDefault();
-    
-    $.ajax({
-      type: "POST",
-      url: "process_ajax_student.php",
-      data: {
-        proc: 'removeStudent',
-        studentId: studentId
-      },
-      success: function(result) {
-        console.log(result)
-        showStudent($('#textinputEmail').val()); // reload student tabs
-      }, 
-      error: function() {
-        console.log('An error has occurred when remove student in Student Tab');
-      },
-    });
-  }
-  // Delete Student
-  function deleteStudent(event, studentId) {
-    event.preventDefault();
-    
-    $.ajax({
-      type: "POST",
-      url: "process_ajax_student.php",
-      data: {
-        proc: 'deleteStudent',
-        studentId: studentId
-      },
-      success: function(result) {
-        console.log(result)
-        showStudent($('#textinputEmail').val()); // reload student tabs
-      }, 
-      error: function() {
-        console.log('An error has occurred when save in Student Tab');
-      },
-    });
-  }
+  $(selector).html(gradeStr);
+}
+// Add Student
+function addStudent() {
+  $.ajax({
+    type: "POST",
+    url: "process_ajax_student.php",
+    data: {
+      proc: 'addStudent',
+      email: $('#textinputEmail').val(),
+      studentFirstName: $('#studentFirstName').val(),
+      studentMI: $('#studentMI').val(),
+      studentLastName: $('#studentLastName').val(),
+      studentGrade: $('#selectGrade').val(),
+      studentDateBirth: $('#studentBirthdayDatepicker input').val()
+    },
+    success: function(result) {
+      console.log(result);
+      $('#studentAdd input, #studentAdd select').val('');
+      showStudent($('#textinputEmail').val()); // reload student tabs
+    }, 
+    error: function() {
+      console.log('An error has occurred when save in Add Student Tab');
+    },
+  });
+}
+// Remove Student
+function removeStudent(event, studentId) {
+  event.preventDefault();
+  
+  $.ajax({
+    type: "POST",
+    url: "process_ajax_student.php",
+    data: {
+      proc: 'removeStudent',
+      studentId: studentId
+    },
+    success: function(result) {
+      console.log(result)
+      showStudent($('#textinputEmail').val()); // reload student tabs
+    }, 
+    error: function() {
+      console.log('An error has occurred when remove student in Student Tab');
+    },
+  });
+}
+// Get Not Enrolled Student
+function getNotEnrolledStudent(event, studentId) {
+  event.preventDefault();
+  
+  $.ajax({
+    type: "GET",
+    url: "process_ajax_student.php",
+    data: {
+      proc: 'getNotEnrolledStudent',
+      email: $('#textinputEmail').val()
+    },
+    success: function(result) {
+      console.log(result)
+      showStudent($('#textinputEmail').val()); // reload student tabs
+    }, 
+    error: function() {
+      console.log('An error has occurred when remove student in Student Tab');
+    },
+  });
+}
+// Delete Student
+function deleteStudent(event, studentId) {
+  event.preventDefault();
+  
+  $.ajax({
+    type: "POST",
+    url: "process_ajax_student.php",
+    data: {
+      proc: 'deleteStudent',
+      studentId: studentId
+    },
+    success: function(result) {
+      console.log(result)
+      showStudent($('#textinputEmail').val()); // reload student tabs
+    }, 
+    error: function() {
+      console.log('An error has occurred when save in Student Tab');
+    },
+  });
+}
 </script>
