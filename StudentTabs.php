@@ -89,14 +89,7 @@ $res .= "<div id='studentAdd' class='tab-pane'>
       <p>Alternately, you may add a new student by clicking the \"New Student\" button.</p>
     </div>
     <div class='students-not-enrolled'>
-      <table>
-        <tbody><tr>
-          <th>Enrolling</th>
-          <th>Student</th>
-          <th>Grade</th>
-          <th></th>
-        </tr>
-    </tbody></table>
+      <table><tbody></tbody></table>
     </div>
   </div>
 </div>";
@@ -129,9 +122,9 @@ echo $res;
 <script type="text/javascript">
 $(document).ready(function() {
   // Insert Grade Select Element in Add Student Tab
-  insertGreadSelectElement('#studentAdd select#selectGrade');
+  insertGradeSelectElement('#studentAdd select#selectGrade');
   // Insert Grade Select Element in table Add Student Tab When exist removed student
-  insertGreadSelectElement('.notEnrolledstudentAddBox select#grade ');
+  insertGradeSelectElement('.notEnrolledstudentAddBox select#grade ');
 
   // datepicker configuration
   var start = moment().subtract(5, 'years');
@@ -167,16 +160,22 @@ $(document).ready(function() {
     $(this).parent().find('.btn-opt.active').removeClass('active');
     $(this).addClass('active');
   });
-
+  // Display NotEnrolledStudent
   $('#studenteNavTab li a[href=#studentAdd]').on('click', function(e) {
     e.preventDefault();
     // $('#studentAdd').html('');
-    getNotEnrolledStudent();
-  })
+    displayNotEnrolledStudent();
+  });
+
+  $('#btnDialogDeleteStudent').on('click', function(e) {
+    e.preventDefault();
+    console.log(123456)
+    console.log($(this).parent('tr').attr('id'))
+  });
 });
 
 // Insert Grade Select Element
-function insertGreadSelectElement(selector) {
+function insertGradeSelectElement(selector) {
   var gradeStr = "<option></option><option>Pre-Kindergarten</option><option>Kindergarten</option>";
 
   for (let i = 1; i <= 12; i++) {
@@ -234,8 +233,8 @@ function removeStudent(event, studentId) {
     },
   });
 }
-// Get Not Enrolled Student
-function getNotEnrolledStudent() {  
+// Get Not Enrolled Student, Display the data
+function displayNotEnrolledStudent() {  
   $.ajax({
     type: "GET",
     url: "process_ajax_student.php",
@@ -246,9 +245,40 @@ function getNotEnrolledStudent() {
     dataType: "json",
     success: function(result) {
       if (result.length) {
-        
-      } else {
+        $('.studentAddBox').css('display', 'none');
+        $('.notEnrolledstudentAddBox').css('display', 'block');
 
+        let rows = "<tr>";
+        rows += "<th>Enrolling</th>";
+        rows += "<th>Student</th>";
+        rows += "<th>Grade</th>";
+        rows += "<th></th>";
+        rows += "</tr>";
+        let gradeAry = ['', 'Pre-Kindergarten', 'Kindergarten', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade', '7th Grade', '8th Grade', '9th Grade', '10th Grade', '11th Grade', '12th Grade'];
+        for (let i = 0; i < result.length; i++) {
+          let row = "<tr id='"+ result[i].id +"'>";
+          row += "<td><input id='enrolling' type='checkbox'></td>";
+          row += "<td id='name'>"+ result[i].first_name + " " + result[i].mi + " " + result[i].last_name +"</td>";
+          row += "<td><select id='grade' class='form-control'>";
+          for (c in gradeAry) {
+            row += "<option "+ (gradeAry[c]==result[i].grade ? "selected" : "") +">"+ gradeAry[c] +"</option>";
+          }
+          row += "</select></td>";
+          row += "<td><button id='btnDialogDeleteStudent' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>";
+          row += "</tr>";
+          rows += row;
+        }
+        
+        $('.students-not-enrolled tbody').html(rows);
+
+        $('#btnDialogDeleteStudent').on('click', function(e) {
+          e.preventDefault();
+          console.log(123456)
+          console.log($(this).parent().parent().attr('id'))
+        });
+      } else {
+        $('.studentAddBox').css('display', 'block');
+        $('.notEnrolledstudentAddBox').css('display', 'none');
       }
     }, 
     error: function() {
