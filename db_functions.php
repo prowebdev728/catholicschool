@@ -84,7 +84,7 @@ function getStudent($email) {
 
   require("db_connection.php");
 
-  $sql = "SELECT * FROM student WHERE email = '$email' AND enroll_status = 1";
+  $sql = "SELECT * FROM student WHERE email = '{$email}' AND enroll_status = 1";
 
   $result = $conn->query($sql);
   $conn->close();
@@ -95,7 +95,7 @@ function getNotEnrolledStudent($email) {
 
   require("db_connection.php");
 
-  $sql = "SELECT * FROM student WHERE email = '$email' AND enroll_status = 0";
+  $sql = "SELECT * FROM student WHERE email = '{$email}' AND enroll_status = 0";
 
   $result = $conn->query($sql);
   $conn->close();

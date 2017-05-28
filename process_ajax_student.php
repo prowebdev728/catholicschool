@@ -29,11 +29,11 @@ if ($proc === 'addStudent') {
 	$status = removeStudent($id);
 	echo $status;
 } else if ($proc === 'getNotEnrolledStudent') {
-	$data = array();
-	$data['email'] = $_GET['email'];
+	$email = $_GET['email'];
 
-	$status = getNotEnrolledStudent($data);
-	echo $status;
+	$result = getNotEnrolledStudent($email);
+	$rows = $result->fetch_all(MYSQLI_ASSOC);
+	echo json_encode($rows);
 }
 
 

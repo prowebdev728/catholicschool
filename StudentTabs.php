@@ -2,8 +2,7 @@
 
 include 'db_functions.php';
 
-$studentEmail = ($_GET['email']); //email
-
+$studentEmail = $_GET['email']; //email
 $result = getStudent($studentEmail);
 
 $res = "<ul id='studenteNavTab' class='nav nav-tabs'>";
@@ -96,12 +95,6 @@ $res .= "<div id='studentAdd' class='tab-pane'>
           <th>Grade</th>
           <th></th>
         </tr>
-        <tr>
-          <td><input id='enrolling' type='checkbox'></td>
-          <td id='name'></td>
-          <td><select id='grade' class='form-control'></select></td>
-          <td><button class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>
-        </tr>
     </tbody></table>
     </div>
   </div>
@@ -125,11 +118,9 @@ $res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dia
     </div>
   </div>
 </div>";
-
 $res .= "</div>";
 
 echo $res;
-
 ?>
 
 <script type="text/javascript">
@@ -177,7 +168,7 @@ $(document).ready(function() {
   $('#studenteNavTab li a[href=#studentAdd]').on('click', function(e) {
     e.preventDefault();
     // $('#studentAdd').html('');
-
+    getNotEnrolledStudent();
   })
 });
 
@@ -241,9 +232,7 @@ function removeStudent(event, studentId) {
   });
 }
 // Get Not Enrolled Student
-function getNotEnrolledStudent(event, studentId) {
-  event.preventDefault();
-  
+function getNotEnrolledStudent() {  
   $.ajax({
     type: "GET",
     url: "process_ajax_student.php",
@@ -251,9 +240,11 @@ function getNotEnrolledStudent(event, studentId) {
       proc: 'getNotEnrolledStudent',
       email: $('#textinputEmail').val()
     },
+    dataType: "json",
     success: function(result) {
-      console.log(result)
-      showStudent($('#textinputEmail').val()); // reload student tabs
+      if (result.length) {
+        
+      }
     }, 
     error: function() {
       console.log('An error has occurred when remove student in Student Tab');

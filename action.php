@@ -433,13 +433,13 @@ $(document).ready(function() {
     if ( $("#ckbShipHomeAddress").prop('checked') ) {
       id = $(this).attr("id");
       targetId = "shippingaddress" + id.substr(id.indexOf("-"));
-      $("#"+targetId).val($(this).val());
+      $("#" + targetId).val($(this).val());
     }
   });
 });
 
 //Timer to auto update the database for Household Information
-setInterval("updateFamilyData();",10000);
+// setInterval("updateFamilyData();",10000);
 
 //This function request an Ajax Call to update the database's user table
 function updateFamilyData(){
