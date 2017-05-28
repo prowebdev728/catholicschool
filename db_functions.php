@@ -154,7 +154,7 @@ function removeStudent($id) {
 function deleteStudent($id) {
   require("db_connection.php");
 
-  $sql = "DELETE FROM student WHERE id='{$id}'";
+  $sql = "DELETE FROM student WHERE id='{$id}' AND enroll_status=0";
 
   if ($conn->query($sql) === true) {
     $conn->close();

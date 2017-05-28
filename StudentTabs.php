@@ -35,7 +35,6 @@ if ($result->num_rows > 0) {
           </div>
         </div>
       </div>";
-
     $tabContent .= "</div>";
 
     $i++;
@@ -95,22 +94,24 @@ $res .= "<div id='studentAdd' class='tab-pane'>
 </div>";
 
 // Modal
-$res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
+$res .= "<div class='modal fade' id='deleteStudentModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
   <div class='modal-dialog' role='document'>
     <div class='modal-content'>
-      <div class='modal-header'>
+      <div class='modal-header' style='background-color:#fab402; border-radius:5px 5px 0 0; margin:1px;'>
         <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-        <h4 class='modal-title' id='myModalLabel'>Modal title</h4>
+        <h4 class='modal-title' id='myModalLabel'>Delete Student?</h4>
       </div>
       <div class='modal-body'>
-        ...
+        <p>Please confirm that you wish to Delete the student record and course selections for <span id='deleteStudentName'></span>?</p>
+        <p>This action cannot be undone and will remove all course selections, etc. associated with this student in this application.  As an alternative you may wish to simply mark <span id='deleteStudentName'></span> as not enrolling.</p>
       </div>
       <div class='modal-footer'>
-        <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-        <button type='button' class='btn btn-primary'>Save changes</button>
+        <button class='btn btn-default' data-dismiss='modal'>Cancel</button>
+        <button id='btnDeleteStudent' class='btn btn-primary'>Delete</button>
       </div>
     </div>
   </div>
+  <input id='deleteStudentId' type='hidden' value='' />
 </div>";
 
 $res .= "</div>";
@@ -140,7 +141,7 @@ $(document).ready(function() {
   $('#studentBirthdayDatepicker').daterangepicker(
     options, 
     function(start, end, label) {
-        $('#studentBirthdayDatepicker input').val(start.format('MM/DD/YYYY'))
+      $('#studentBirthdayDatepicker input').val(start.format('MM/DD/YYYY'))
     }
   );
 
@@ -163,14 +164,15 @@ $(document).ready(function() {
   // Display NotEnrolledStudent
   $('#studenteNavTab li a[href=#studentAdd]').on('click', function(e) {
     e.preventDefault();
-    // $('#studentAdd').html('');
+    //Init Modal
+    $('#deleteStudentModal #deleteStudentId').val('');
+    $('#deleteStudentModal #deleteStudentName').text('');
     displayNotEnrolledStudent();
   });
-
-  $('#btnDialogDeleteStudent').on('click', function(e) {
+  $('#btnDeleteStudent').on('click', function(e) {
     e.preventDefault();
-    console.log(123456)
-    console.log($(this).parent('tr').attr('id'))
+    let studentId = $('#deleteStudentModal #deleteStudentId').val();
+    deleteStudent(studentId);
   });
 });
 
@@ -233,8 +235,8 @@ function removeStudent(event, studentId) {
     },
   });
 }
-// Get Not Enrolled Student, Display the data
-function displayNotEnrolledStudent() {  
+// Get Not Enrolled Student. Display the data
+function displayNotEnrolledStudent() {
   $.ajax({
     type: "GET",
     url: "process_ajax_student.php",
@@ -264,17 +266,21 @@ function displayNotEnrolledStudent() {
             row += "<option "+ (gradeAry[c]==result[i].grade ? "selected" : "") +">"+ gradeAry[c] +"</option>";
           }
           row += "</select></td>";
-          row += "<td><button id='btnDialogDeleteStudent' class='btn btn-xs btn-warning'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>";
+          row += "<td><button id='btnDispalyDeleteStudentModal' class='btn btn-xs btn-warning' data-toggle='modal' data-target='#deleteStudentModal'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>";
           row += "</tr>";
           rows += row;
         }
         
         $('.students-not-enrolled tbody').html(rows);
 
-        $('#btnDialogDeleteStudent').on('click', function(e) {
+        $('#btnDispalyDeleteStudentModal').on('click', function(e) {
           e.preventDefault();
-          console.log(123456)
-          console.log($(this).parent().parent().attr('id'))
+          let $tr = $(this).parent().parent();
+          let studentId = $tr.attr('id');
+          let studentName = $tr.find('#name').text();
+          
+          $('#deleteStudentModal #deleteStudentId').val(studentId);
+          $('#deleteStudentModal #deleteStudentName').text(studentName.substring(0, studentName.indexOf(' ')));
         });
       } else {
         $('.studentAddBox').css('display', 'block');
@@ -287,9 +293,8 @@ function displayNotEnrolledStudent() {
   });
 }
 // Delete Student
-function deleteStudent(event, studentId) {
-  event.preventDefault();
-  
+function deleteStudent(studentId) {
+  console.log(studentId);
   $.ajax({
     type: "POST",
     url: "process_ajax_student.php",
@@ -299,7 +304,8 @@ function deleteStudent(event, studentId) {
     },
     success: function(result) {
       console.log(result)
-      showStudent($('#textinputEmail').val()); // reload student tabs
+      displayNotEnrolledStudent();
+      $('#deleteStudentModal').modal('hide');
     }, 
     error: function() {
       console.log('An error has occurred when save in Student Tab');

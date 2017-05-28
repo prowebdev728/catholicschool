@@ -126,9 +126,9 @@ table.table {
 .students-not-enrolled table td {
   padding: 0 15px 9px 15px;
 }
-.students-not-enrolled table tbody tr td button#btnDialogDeleteStudent {
+.students-not-enrolled table tbody tr td button#btnDispalyDeleteStudentModal {
   display: none;
 }
-.students-not-enrolled table tbody tr:hover td button#btnDialogDeleteStudent {
+.students-not-enrolled table tbody tr:hover td button#btnDispalyDeleteStudentModal {
   display: block;
 }

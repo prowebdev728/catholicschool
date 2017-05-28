@@ -23,10 +23,9 @@ if ($proc === 'addStudent') {
 	$status = removeStudent($id);
 	echo $status;
 } else if ($proc === 'deleteStudent') {
-	$data = array();
 	$id = $_POST['studentId'];
 	
-	$status = removeStudent($id);
+	$status = deleteStudent($id);
 	echo $status;
 } else if ($proc === 'getNotEnrolledStudent') {
 	$email = $_GET['email'];
