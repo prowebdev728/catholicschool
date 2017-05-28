@@ -3,6 +3,7 @@
 include 'db_functions.php';
 
 $studentEmail = $_GET['email']; //email
+
 $result = getStudent($studentEmail);
 
 $res = "<ul id='studenteNavTab' class='nav nav-tabs'>";
@@ -118,9 +119,11 @@ $res .= "<div class='modal fade' id='removeStudentModal' tabindex='-1' role='dia
     </div>
   </div>
 </div>";
+
 $res .= "</div>";
 
 echo $res;
+
 ?>
 
 <script type="text/javascript">
@@ -244,6 +247,8 @@ function getNotEnrolledStudent() {
     success: function(result) {
       if (result.length) {
         
+      } else {
+
       }
     }, 
     error: function() {
