@@ -89,10 +89,13 @@ $res .= "<div id='studentAdd' class='tab-pane'>
     </div>
     <div class='students-not-enrolled'>
       <table><tbody></tbody></table>
+      <div class='button-group'>
+        <button id='btnAddSelectedStudents' class='btn btn-primary'>Add Selected Students</button>
+        <button id='btnAddNewStudent' class='btn btn-primary'>Add New Student</button>
+      </div>
     </div>
   </div>
 </div>";
-
 // Modal
 $res .= "<div class='modal fade' id='deleteStudentModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>
   <div class='modal-dialog' role='document'>
@@ -113,11 +116,9 @@ $res .= "<div class='modal fade' id='deleteStudentModal' tabindex='-1' role='dia
   </div>
   <input id='deleteStudentId' type='hidden' value='' />
 </div>";
-
 $res .= "</div>";
 
 echo $res;
-
 ?>
 
 <script type="text/javascript">
@@ -164,15 +165,26 @@ $(document).ready(function() {
   // Display NotEnrolledStudent
   $('#studenteNavTab li a[href=#studentAdd]').on('click', function(e) {
     e.preventDefault();
-    //Init Modal
-    $('#deleteStudentModal #deleteStudentId').val('');
-    $('#deleteStudentModal #deleteStudentName').text('');
     displayNotEnrolledStudent();
   });
+  // In modal
   $('#btnDeleteStudent').on('click', function(e) {
     e.preventDefault();
     let studentId = $('#deleteStudentModal #deleteStudentId').val();
     deleteStudent(studentId);
+  });
+  // 'Add Selected Students' button
+  $('#btnAddSelectedStudents').on('click', function(e) {
+    e.preventDefault();
+    console.log($('.students-not-enrolled tr:has(#enrolling:checked)').size())
+
+    // revertStudent(studentIds);
+  });
+  // 'Add New Student' button
+  $('#btnAddNewStudent').on('click', function(e) {
+    e.preventDefault();
+    $('.studentAddBox').css('display', 'block');
+    $('.notEnrolledstudentAddBox').css('display', 'none');
   });
 });
 
@@ -235,8 +247,33 @@ function removeStudent(event, studentId) {
     },
   });
 }
+// Revert Student
+function revertStudent(studentIds) {
+  console.log(studentIds);
+  return
+  $.ajax({
+    type: "POST",
+    url: "process_ajax_student.php",
+    data: {
+      proc: 'revertStudent',
+      studentIds: studentIds
+    },
+    success: function(result) {
+      console.log(result)
+      showStudent($('#textinputEmail').val()); // reload student tabs
+    }, 
+    error: function() {
+      console.log('An error has occurred when remove student in Student Tab');
+    },
+  });
+}
 // Get Not Enrolled Student. Display the data
 function displayNotEnrolledStudent() {
+  //Init Modal
+  $('#deleteStudentModal #deleteStudentId').val('');
+  $('#deleteStudentModal #deleteStudentName').text('');
+  //Init Button
+  $('#btnAddSelectedStudents').attr('disabled', 'disabled');
   $.ajax({
     type: "GET",
     url: "process_ajax_student.php",
@@ -272,7 +309,26 @@ function displayNotEnrolledStudent() {
         }
         
         $('.students-not-enrolled tbody').html(rows);
+        // checkbox click
+        $('.students-not-enrolled #enrolling').on('change', function(e) {
+          e.preventDefault();
 
+          let flag = false;
+          let $checkboxList = $('.students-not-enrolled #enrolling');
+          for (c in $checkboxList) {
+            if ($checkboxList.eq(c).prop('checked') === true) {
+              flag = true;
+              break;              
+            }
+          }
+
+          if (flag === true) {
+            $('#btnAddSelectedStudents').removeAttr('disabled');
+          } else {
+            $('#btnAddSelectedStudents').attr('disabled', 'disabled');
+          }
+        });
+        // In modal, 'Delete' button
         $('#btnDispalyDeleteStudentModal').on('click', function(e) {
           e.preventDefault();
           let $tr = $(this).parent().parent();

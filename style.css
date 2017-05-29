@@ -124,11 +124,14 @@ table.table {
   padding: 6px;
 }
 .students-not-enrolled table td {
-  padding: 0 15px 9px 15px;
+  padding: 0 6px 9px 6px;
 }
 .students-not-enrolled table tbody tr td button#btnDispalyDeleteStudentModal {
   display: none;
 }
 .students-not-enrolled table tbody tr:hover td button#btnDispalyDeleteStudentModal {
   display: block;
+}
+#btnAddSelectedStudents {
+  margin: 0 12px 0 12px;
 }
