@@ -6,7 +6,7 @@ include 'db_functions.php';
 
 $proc = $_REQUEST['proc'];
 
-if ($proc === 'addStudent') {
+if ($proc == 'addStudent') {
 	$data = array();
 	$data['email'] = $_POST['email'];
 	$data['first_name'] = $_POST['studentFirstName'];
@@ -17,17 +17,22 @@ if ($proc === 'addStudent') {
 
 	$status = insertStudent($data);
 	echo $status;
-} else if ($proc === 'removeStudent') {
+} else if ($proc == 'removeStudent') {
 	$id = $_POST['studentId'];
 	
 	$status = removeStudent($id);
 	echo $status;
-} else if ($proc === 'deleteStudent') {
+} else if ($proc == 'revertStudent') {
+	$ids = $_POST['studentIds'];
+
+	$status = revertStudent($ids);
+	echo $status;
+} else if ($proc == 'deleteStudent') {
 	$id = $_POST['studentId'];
 	
 	$status = deleteStudent($id);
 	echo $status;
-} else if ($proc === 'getNotEnrolledStudent') {
+} else if ($proc == 'getNotEnrolledStudent') {
 	$email = $_GET['email'];
 
 	$result = getNotEnrolledStudent($email);

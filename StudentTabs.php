@@ -17,12 +17,12 @@ if ($result->num_rows > 0) {
     $tabContent .= "<div id='student{$row['id']}' class='". ($i ? "tab-pane" : "tab-pane fade active in") ."'>";
     $tabContent .= "<div class='form-group'>
         <div class='student-name-bar'>
-          <label> {$row['first_name']} {$row['mi']} {$row['last_name']}</label>
+          <label><span id='first_name'>{$row['first_name']}</span> <span id='mi'>{$row['mi']}</span> <span id='last_name'>{$row['last_name']}</span></label>
           <button type='button' class='btn btn-warning' onclick='removeStudent(event, {$row['id']})'><span class='glyphicon glyphicon-remove'></span> Remove</button>
-          <button id='btnEditStudent' studentid='{$row['id']}' type='button' class='btn btn-primary'><span class='glyphicon glyphicon-pencil'></span> Edit</button>
+          <button type='button' class='btn btn-primary' onclick='editStudent(event, {$row['id']})'><span class='glyphicon glyphicon-pencil'></span> Edit</button>
         </div>
         <div class='student-birth-grade'>
-          <label>Date of Birth</label>: {$row['date_birth']} <label>Grade</label>: {$row['grade']}
+          <label>Date of Birth:</label> <span id='date_birth'>{$row['date_birth']}</span> <label>Grade:</label> <span id='grade'>{$row['grade']}</span>
         </div>
         <div class='student-enrollmentoptions'>
           Enrollment Options
@@ -129,30 +129,27 @@ $(document).ready(function() {
   insertGradeSelectElement('.notEnrolledstudentAddBox select#grade ');
 
   // datepicker configuration
-  var start = moment().subtract(5, 'years');
-  var end = moment();
-  var options={
-    format: 'MM/DD/YYYY',
-    singleDatePicker: true,
-    showDropdowns: true,
-    autoclose: true,
-    startDate: start,
-    "maxDate": start,
-  };
+  let start = moment().subtract(5, 'years');
   $('#studentBirthdayDatepicker').daterangepicker(
-    options, 
-    function(start, end, label) {
-      $('#studentBirthdayDatepicker input').val(start.format('MM/DD/YYYY'))
+    {
+      locale: {format: 'YYYY-MM-DD'},
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoclose: true,
+      startDate: start,
+      "maxDate": start,
+    }, function(start, end, label) {
+      $('#studentBirthdayDatepicker input').val(start.format('YYYY-MM-DD'));
     }
   );
 
   // Add Student
-  $('#btnSaveAddStudent').on('click', function(e) {
+  $('#studentAdd #btnSaveAddStudent').on('click', function(e) {
     e.preventDefault();
     addStudent();
   });
   // When click Cancel button, Go to first tab
-  $('#btnCancelAddStudent').on('click', function(e) {
+  $('#studentAdd #btnCancelAddStudent').on('click', function(e) {
     e.preventDefault();
     $('#studenteNavTab li:first-child a').trigger('click');
   });
@@ -176,9 +173,14 @@ $(document).ready(function() {
   // 'Add Selected Students' button
   $('#btnAddSelectedStudents').on('click', function(e) {
     e.preventDefault();
-    console.log($('.students-not-enrolled tr:has(#enrolling:checked)').size())
 
-    // revertStudent(studentIds);
+    let studentIds = [];
+    let $trs = $('.students-not-enrolled tr:has(#enrolling:checked)');
+    for (let i = 0; i < $trs.length; i++) {
+      studentIds.push($trs.eq(i).attr('id'));
+    }
+
+    revertStudent(studentIds.toString());
   });
   // 'Add New Student' button
   $('#btnAddNewStudent').on('click', function(e) {
@@ -205,13 +207,18 @@ function insertGradeSelectElement(selector) {
 }
 // Add Student
 function addStudent() {
+  let studentFirstName = $.trim($('#studentFirstName').val());
+  if (studentFirstName == '') {
+    alert('Please input First Name.');
+    return;
+  }
   $.ajax({
     type: "POST",
     url: "process_ajax_student.php",
     data: {
       proc: 'addStudent',
       email: $('#textinputEmail').val(),
-      studentFirstName: $('#studentFirstName').val(),
+      studentFirstName: studentFirstName,
       studentMI: $('#studentMI').val(),
       studentLastName: $('#studentLastName').val(),
       studentGrade: $('#selectGrade').val(),
@@ -247,10 +254,48 @@ function removeStudent(event, studentId) {
     },
   });
 }
+function editStudent(event, studentId) {
+  event.preventDefault();
+
+  let blockId = 'student' + studentId;
+  let first_name = $('#'+blockId+' #first_name').text();
+  let mi = $('#'+blockId+' #mi').text();
+  let last_name = $('#'+blockId+' #last_name').text();
+  let date_birth = $('#'+blockId+' #date_birth').text();
+  let grade = $('#'+blockId+' #grade').text();
+  let originForm = $('#'+blockId).html();
+  let editForm = $('.studentAddBox').html();
+
+  $('#'+blockId).html(editForm);
+  $('#'+blockId+' #studentFirstName').val(first_name);
+  $('#'+blockId+' #studentMI').val(mi);
+  $('#'+blockId+' #studentLastName').val(last_name);
+  $('#'+blockId+' #studentBirthdayDatepicker input').val(date_birth);
+  $('#'+blockId+' #selectGrade').val(grade);
+  // Insert Grade Select Element
+  insertGradeSelectElement('#'+blockId+' select#selectGrade');
+  // datepicker configuration
+  let start = moment().subtract(5, 'years');
+  $('#'+blockId+' #studentBirthdayDatepicker').daterangepicker(
+    {
+      locale: {format: 'YYYY-MM-DD'},
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoclose: true,
+      startDate: start,
+      "maxDate": start,
+    }, function(start, end, label) {
+      $('#studentBirthdayDatepicker input').val(start.format('YYYY-MM-DD'));
+    }
+  );
+
+  $('#'+blockId+' #btnCancelAddStudent').on('click', function(e) {
+    e.preventDefault();
+    $('#'+blockId).html(originForm);
+  });
+}
 // Revert Student
 function revertStudent(studentIds) {
-  console.log(studentIds);
-  return
   $.ajax({
     type: "POST",
     url: "process_ajax_student.php",
@@ -260,10 +305,11 @@ function revertStudent(studentIds) {
     },
     success: function(result) {
       console.log(result)
-      showStudent($('#textinputEmail').val()); // reload student tabs
+      showStudent($('#textinputEmail').val());
+      displayNotEnrolledStudent();
     }, 
     error: function() {
-      console.log('An error has occurred when remove student in Student Tab');
+      console.log('Error:Add Selected Students button event');
     },
   });
 }
@@ -303,7 +349,7 @@ function displayNotEnrolledStudent() {
             row += "<option "+ (gradeAry[c]==result[i].grade ? "selected" : "") +">"+ gradeAry[c] +"</option>";
           }
           row += "</select></td>";
-          row += "<td><button id='btnDispalyDeleteStudentModal' class='btn btn-xs btn-warning' data-toggle='modal' data-target='#deleteStudentModal'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>";
+          row += "<td style='width:75px'><button id='btnDispalyDeleteStudentModal' class='btn btn-xs btn-warning' data-toggle='modal' data-target='#deleteStudentModal'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>";
           row += "</tr>";
           rows += row;
         }
@@ -329,7 +375,7 @@ function displayNotEnrolledStudent() {
           }
         });
         // In modal, 'Delete' button
-        $('#btnDispalyDeleteStudentModal').on('click', function(e) {
+        $('.students-not-enrolled #btnDispalyDeleteStudentModal').on('click', function(e) {
           e.preventDefault();
           let $tr = $(this).parent().parent();
           let studentId = $tr.attr('id');
@@ -364,7 +410,7 @@ function deleteStudent(studentId) {
       $('#deleteStudentModal').modal('hide');
     }, 
     error: function() {
-      console.log('An error has occurred when save in Student Tab');
+      console.log('Error: Delete button event in Modal Dialog');
     },
   });
 }
