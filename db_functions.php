@@ -150,6 +150,19 @@ function removeStudent($id) {
   }
 }
 
+function revertStudent($ids) {
+  require("db_connection.php");
+
+  $sql = "UPDATE student SET enroll_status=1 WHERE id IN ($ids)";
+
+  if ($conn->query($sql) === true) {
+    $conn->close();
+    return true;
+  } else {
+    echo "Update enroll_status field Error: " . $conn->error;
+    return false;
+  }
+}
 
 function deleteStudent($id) {
   require("db_connection.php");
