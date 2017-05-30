@@ -96,7 +96,7 @@ table.table {
   font-weight: normal;
   color: #555;
 }
-.student-birth-grade label:nth-child(2) {
+.student-birth-grade :nth-child(3) {
   margin-left: 35px;
 }
 .student-enrollmentoptions {
