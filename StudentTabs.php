@@ -207,22 +207,30 @@ function insertGradeSelectElement(selector) {
 }
 // Add Student
 function addStudent() {
-  let studentFirstName = $.trim($('#studentFirstName').val());
+
+  let email = $('#textinputEmail').val();
+  let studentFirstName = $.trim($('#studentAdd #studentFirstName').val());
+  let studentMI = $.trim($('#studentAdd #studentMI').val());
+  let studentLastName = $.trim($('#studentAdd #studentLastName').val());
+  let studentGrade = $.trim($('#studentAdd #selectGrade').val());
+  let studentDateBirth = $.trim($('#studentAdd #studentBirthdayDatepicker input').val());
+
   if (studentFirstName == '') {
     alert('Please input First Name.');
     return;
   }
+
   $.ajax({
     type: "POST",
     url: "process_ajax_student.php",
     data: {
       proc: 'addStudent',
-      email: $('#textinputEmail').val(),
+      email: email,
       studentFirstName: studentFirstName,
-      studentMI: $('#studentMI').val(),
-      studentLastName: $('#studentLastName').val(),
-      studentGrade: $('#selectGrade').val(),
-      studentDateBirth: $('#studentBirthdayDatepicker input').val()
+      studentMI: studentMI,
+      studentLastName: studentLastName,
+      studentGrade: studentGrade,
+      studentDateBirth: studentDateBirth
     },
     success: function(result) {
       console.log(result);
@@ -234,6 +242,44 @@ function addStudent() {
     },
   });
 }
+
+// Update Student
+function updateStudent(studentId) {
+
+  let blockId = 'student' + studentId;
+  let studentFirstName = $.trim($('#'+blockId+' #studentFirstName').val());
+  let studentMI = $.trim($('#studentMI').val());
+  let studentLastName = $.trim($('#studentLastName').val());
+  let studentGrade = $.trim($('#selectGrade').val());
+  let studentDateBirth = $.trim($('#studentBirthdayDatepicker input').val());
+
+  if (studentFirstName == '') {
+    alert('Please input First Name.');
+    return;
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "process_ajax_student.php",
+    data: {
+      proc: 'updateStudent',
+      studentFirstName: studentFirstName,
+      studentMI: studentMI,
+      studentLastName: studentLastName,
+      studentGrade: studentGrade,
+      studentDateBirth: studentDateBirth
+    },
+    success: function(result) {
+      console.log(result);
+      $('#studentAdd input, #studentAdd select').val('');
+      showStudent($('#textinputEmail').val()); // reload student tabs
+    }, 
+    error: function() {
+      console.log('An error has occurred when save in Add Student Tab');
+    },
+  });
+}
+
 // Remove Student
 function removeStudent(event, studentId) {
   event.preventDefault();
@@ -254,6 +300,8 @@ function removeStudent(event, studentId) {
     },
   });
 }
+
+// Edit Student, Replace to edit form when click 'Edit' button
 function editStudent(event, studentId) {
   event.preventDefault();
 
@@ -267,11 +315,6 @@ function editStudent(event, studentId) {
   let editForm = $('.studentAddBox').html();
 
   $('#'+blockId).html(editForm);
-  $('#'+blockId+' #studentFirstName').val(first_name);
-  $('#'+blockId+' #studentMI').val(mi);
-  $('#'+blockId+' #studentLastName').val(last_name);
-  $('#'+blockId+' #studentBirthdayDatepicker input').val(date_birth);
-  $('#'+blockId+' #selectGrade').val(grade);
   // Insert Grade Select Element
   insertGradeSelectElement('#'+blockId+' select#selectGrade');
   // datepicker configuration
@@ -288,10 +331,20 @@ function editStudent(event, studentId) {
       $('#studentBirthdayDatepicker input').val(start.format('YYYY-MM-DD'));
     }
   );
-
+  $('#'+blockId+' #studentFirstName').val(first_name);
+  $('#'+blockId+' #studentMI').val(mi);
+  $('#'+blockId+' #studentLastName').val(last_name);
+  $('#'+blockId+' #studentBirthdayDatepicker input').val(date_birth);
+  $('#'+blockId+' #selectGrade option:contains("'+grade+'")').attr('selected', 'selected');
+  // 'Cancel' button, Return origin page
   $('#'+blockId+' #btnCancelAddStudent').on('click', function(e) {
     e.preventDefault();
     $('#'+blockId).html(originForm);
+  });
+  // Update Student
+  $('#'+blockId+' #btnSaveAddStudent').on('click', function(e) {
+    e.preventDefault();
+    updateStudent(studentId);
   });
 }
 // Revert Student
@@ -396,7 +449,7 @@ function displayNotEnrolledStudent() {
 }
 // Delete Student
 function deleteStudent(studentId) {
-  console.log(studentId);
+  
   $.ajax({
     type: "POST",
     url: "process_ajax_student.php",
