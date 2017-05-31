@@ -272,13 +272,7 @@ function updateStudent(studentId) {
       studentDateBirth: studentDateBirth
     },
     success: function(result) {
-      console.log(result);
-      let nth = $('#studenteNavTab li.active').index();
-      console.log('nth', nth)
       showStudent($('#textinputEmail').val()); // reload student tabs
-      console.log(1)
-      $('#studenteNavTab li:nth-child('+nth+') a').trigger('click');
-      console.log(2)
     }, 
     error: function() {
       console.log('An error has occurred when save in Add Student Tab');

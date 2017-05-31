@@ -495,8 +495,9 @@ function showStudent(email) {
       email: email
     },
     success: function(result) {
-      console.log(3)
+      let nth = $('#studenteNavTab li.active').index()+1;
       $("#StudentTabsPlaceHolder").html(result);
+      $('#studenteNavTab li:nth-child('+nth+') a').trigger('click');
     }, 
     error: function() {
       $('#StudentTabsPlaceHolder').html('<p>An error has occurred</p>');
