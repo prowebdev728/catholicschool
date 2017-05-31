@@ -151,6 +151,7 @@ $(document).ready(function() {
   // When click Cancel button, Go to first tab
   $('#studentAdd #btnCancelAddStudent').on('click', function(e) {
     e.preventDefault();
+    // Display First Student Tab
     $('#studenteNavTab li:first-child a').trigger('click');
   });
   // Enrollment Type
@@ -248,10 +249,10 @@ function updateStudent(studentId) {
 
   let blockId = 'student' + studentId;
   let studentFirstName = $.trim($('#'+blockId+' #studentFirstName').val());
-  let studentMI = $.trim($('#studentMI').val());
-  let studentLastName = $.trim($('#studentLastName').val());
-  let studentGrade = $.trim($('#selectGrade').val());
-  let studentDateBirth = $.trim($('#studentBirthdayDatepicker input').val());
+  let studentMI = $.trim($('#'+blockId+' #studentMI').val());
+  let studentLastName = $.trim($('#'+blockId+' #studentLastName').val());
+  let studentGrade = $.trim($('#'+blockId+' #selectGrade').val());
+  let studentDateBirth = $.trim($('#'+blockId+' #studentBirthdayDatepicker input').val());
 
   if (studentFirstName == '') {
     alert('Please input First Name.');
@@ -263,6 +264,7 @@ function updateStudent(studentId) {
     url: "process_ajax_student.php",
     data: {
       proc: 'updateStudent',
+      studentId: studentId,
       studentFirstName: studentFirstName,
       studentMI: studentMI,
       studentLastName: studentLastName,
@@ -271,8 +273,12 @@ function updateStudent(studentId) {
     },
     success: function(result) {
       console.log(result);
-      $('#studentAdd input, #studentAdd select').val('');
+      let nth = $('#studenteNavTab li.active').index();
+      console.log('nth', nth)
       showStudent($('#textinputEmail').val()); // reload student tabs
+      console.log(1)
+      $('#studenteNavTab li:nth-child('+nth+') a').trigger('click');
+      console.log(2)
     }, 
     error: function() {
       console.log('An error has occurred when save in Add Student Tab');

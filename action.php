@@ -495,6 +495,7 @@ function showStudent(email) {
       email: email
     },
     success: function(result) {
+      console.log(3)
       $("#StudentTabsPlaceHolder").html(result);
     }, 
     error: function() {
