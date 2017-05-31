@@ -54,7 +54,7 @@ $res .= "<div id='studentAdd' class='tab-pane'>
       First Name<br>
       <input id='studentFirstName' type='text' placeholder='required' class='form-control'>
     </div>
-    <div class='form-group col-md-1'>
+    <div class='form-group col-md-1' style='min-width:75px'>
       M.I.<br>
       <input id='studentMI' type='text' placeholder='' class='form-control'>
     </div>
