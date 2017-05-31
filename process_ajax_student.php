@@ -17,6 +17,17 @@ if ($proc == 'addStudent') {
 
 	$status = insertStudent($data);
 	echo $status;
+} else if ($proc == 'updateStudent') {
+	$data = array();
+	$data['id'] = $_POST['studentId'];
+	$data['first_name'] = $_POST['studentFirstName'];
+	$data['mi'] = $_POST['studentMI'];
+	$data['last_name'] = $_POST['studentLastName'];
+	$data['grade'] = $_POST['studentGrade'];
+	$data['date_birth'] = $_POST['studentDateBirth'];
+
+	$status = updateStudent($data);
+	echo $status;
 } else if ($proc == 'removeStudent') {
 	$id = $_POST['studentId'];
 	

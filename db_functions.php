@@ -104,7 +104,6 @@ function getNotEnrolledStudent($email) {
 
 
 // Insert student
-
 function insertStudent($data) {
 
   require("db_connection.php");
@@ -136,6 +135,30 @@ function insertStudent($data) {
   }
 }
 
+// Update student
+function updateStudent($data) {
+
+  require("db_connection.php");
+
+  $sql = "UPDATE student SET
+            first_name = '{$data['first_name']}',
+            mi = '{$data['mi']}',
+            last_name = '{$data['last_name']}',
+            grade = '{$data['grade']}',
+            date_birth = '{$data['date_birth']}'
+          WHERE id='{$data['id']}'";
+
+  //Checking the results
+  if ($conn->query($sql) === true) {
+    $conn->close();
+    return true;
+  } else {
+    echo "Error updating record: " . $conn->error;
+    return false;
+  }
+}
+
+// Remove Student, Set enroll_status = 0
 function removeStudent($id) {
   require("db_connection.php");
 
@@ -150,6 +173,7 @@ function removeStudent($id) {
   }
 }
 
+// Revert Student, Set enroll_status = 1
 function revertStudent($ids) {
   require("db_connection.php");
 
@@ -164,6 +188,7 @@ function revertStudent($ids) {
   }
 }
 
+// Delete Student
 function deleteStudent($id) {
   require("db_connection.php");
 
