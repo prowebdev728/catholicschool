@@ -106,10 +106,10 @@ if ($motherDeceased == 1) {
         <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-info-sign"></h4>&nbsp;&nbsp;&nbsp;Introduction
         </a>
-        <a href="#" class="list-group-item text-left">
+        <a href="#" class="list-group-item active text-left">
           <h4 class="glyphicon glyphicon-home"></h4>&nbsp;&nbsp;&nbsp;Household Information
         </a>
-        <a href="#" class="list-group-item active text-left">
+        <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-user"></h4>&nbsp;&nbsp;&nbsp;Student Information
         </a>
         <a href="#" class="list-group-item text-left">
@@ -161,7 +161,7 @@ if ($motherDeceased == 1) {
         </div>
 
         <!-- Household Information section -->
-        <div class="bhoechie-tab-content">
+        <div class="bhoechie-tab-content active">
             <h3 style="margin-top: 0;color:#55518a">Family Information</h3>
               <form>
                 <fieldset>
@@ -344,7 +344,7 @@ if ($motherDeceased == 1) {
         </div>
 
         <!-- Student section -->
-        <div class="bhoechie-tab-content active">
+        <div class="bhoechie-tab-content">
             <h3 style="margin-top: 0;color:#55518a">Student Information</h3>
             <p>
               This section shows the students who are being enrolled with this application and the details of their enrollment. Use the 'Add Student' tab to enroll a new or previously enrolled student.
