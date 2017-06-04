@@ -5,6 +5,16 @@
 <!-- Jquery CDN -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+<!--include jQuery Validation Plugin-->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+
+<!--Optional: include only if you are using the extra rules in additional-methods.js -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/additional-methods.min.js"></script>
+
+<!--jQuery Tooltipster-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.tooltipster/4.2.5/css/tooltipster.bundle.min.css">
+<script src="https://cdn.jsdelivr.net/jquery.tooltipster/4.2.5/js/tooltipster.bundle.min.js"></script>
+
 <script src="include.js"></script>
 
 <!-- Bootstrap CDN -->
@@ -103,10 +113,10 @@ if ($motherDeceased == 1) {
   <div class="col-sm-12">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
       <div class="list-group">
-        <a href="#" class="list-group-item text-left">
+        <a href="#" class="list-group-item active text-left">
           <h4 class="glyphicon glyphicon-info-sign"></h4>&nbsp;&nbsp;&nbsp;Introduction
         </a>
-        <a href="#" class="list-group-item active text-left">
+        <a href="#" class="list-group-item text-left">
           <h4 class="glyphicon glyphicon-home"></h4>&nbsp;&nbsp;&nbsp;Household Information
         </a>
         <a href="#" class="list-group-item text-left">
@@ -131,7 +141,7 @@ if ($motherDeceased == 1) {
     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 bhoechie-tab">
 
         <!-- Introduction section -->
-        <div class="bhoechie-tab-content">
+        <div class="bhoechie-tab-content active">
           <h2 style="margin-top: 0;color:#55518a">Introduction to the Application Process</h2>
           <p>
             The enrollment process generally follows the steps below. However if you are a returning family, much of the information will already be there and all you need to do is update it.
@@ -161,9 +171,9 @@ if ($motherDeceased == 1) {
         </div>
 
         <!-- Household Information section -->
-        <div class="bhoechie-tab-content active">
+        <div class="bhoechie-tab-content">
             <h3 style="margin-top: 0;color:#55518a">Family Information</h3>
-              <form>
+              <form id="householdinfoform">
                 <fieldset>
                   <table border=0 class="Table">
                     <tr>
@@ -257,29 +267,29 @@ if ($motherDeceased == 1) {
                       <div class="homeaddress">
                         <div class="form-group" style="margin-top: 25px;">
                           Street Address<br>
-                          <input id="homeaddress-streetaddress1" value="" type="text" class="form-control input-md">  
+                          <input id="homeaddressStreetaddress1" name="homeaddressStreetaddress1" type="text" class="form-control input-md">  
                         </div>
                         <div class="form-group">
-                          <input id="homeaddress-streetaddress2" value="" type="text" class="form-control input-md">  
+                          <input id="homeaddressStreetaddress2" type="text" class="form-control input-md">  
                         </div>
                         <div class="form-group">
                           <div class="homeaddress-city">
                             City<br>
-                            <input id="homeaddress-city" value="" type="text" class="form-control">
+                            <input id="homeaddressCity" name="homeaddressCity" type="text" class="form-control">
                           </div>
                           <div class="homeaddress-state">
                             State<br>
-                            <input id="homeaddress-state" value="" type="text" class="form-control">
+                            <input id="homeaddressState" name="homeaddressState" type="text" class="form-control">
                           </div>
                           <div class="homeaddress-zipcode">
                             Zip Code<br>
-                            <input id="homeaddress-zipcode" value="" type="text" class="form-control">
+                            <input id="homeaddressZipcode" name="homeaddressZipcode" type="text" class="form-control">
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="homeaddress-country">
                             Country<br>
-                            <input id="homeaddress-country" value="" type="text" class="form-control">
+                            <input id="homeaddressCountry" name="homeaddressCountry" type="text" class="form-control">
                           </div>
                         </div>
                       </div>
@@ -293,29 +303,29 @@ if ($motherDeceased == 1) {
                         </div>
                         <div class="form-group">
                           Street Address<br>
-                          <input id="shippingaddress-streetaddress1" value="" type="text" class="form-control">  
+                          <input id="shippingaddressStreetaddress1" name="shippingaddressStreetaddress1" type="text" class="form-control">  
                         </div>
                         <div class="form-group">
-                          <input id="shippingaddress-streetaddress2" value="" type="text" class="form-control">  
+                          <input id="shippingaddressStreetaddress2" type="text" class="form-control">  
                         </div>
                         <div class="form-group">
                           <div class="shippingaddress-city">
                             City<br>
-                            <input id="shippingaddress-city" value="" type="text" class="form-control">
+                            <input id="shippingaddressCity" name="shippingaddressCity" type="text" class="form-control">
                           </div>
                           <div class="shippingaddress-state">
                             State<br>
-                            <input id="shippingaddress-state" value="" type="text" class="form-control">
+                            <input id="shippingaddressState" name="shippingaddressState" type="text" class="form-control">
                           </div>
                           <div class="shippingaddress-zipcode">
                             Zip Code<br>
-                            <input id="shippingaddress-zipcode" value="" type="text" class="form-control">
+                            <input id="shippingaddressZipcode" name="shippingaddressZipcode" type="text" class="form-control">
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="shippingaddress-country">
                             Country<br>
-                            <input id="shippingaddress-country" value="" type="text" class="form-control">
+                            <input id="shippingaddressCountry" name="shippingaddressCountry" type="text" class="form-control">
                           </div>
                         </div>
                       </div>
@@ -327,15 +337,15 @@ if ($motherDeceased == 1) {
                       <h4 class="titlelabel">Contact Information</h4>
                       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                           Phone Number<br>
-                          <input id="phonenumber" value="" type="text" class="form-control">
+                          <input id="phonenumber" name="phonenumber" type="text" class="form-control">
                       </div>
                       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                           Alternate Phone Number<br>
-                          <input id="altphonenumber" value="" type="text" class="form-control">
+                          <input id="altphonenumber" type="text" class="form-control">
                       </div>
                       <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                           Email Address<br>
-                          <input id="emailaddress" value="" type="text" class="form-control">
+                          <input id="emailaddress" name="emailaddress" type="text" class="form-control">
                       </div>
                     </div>
                   </div>
@@ -430,14 +440,81 @@ $(document).ready(function() {
     e.preventDefault();
     if ( $("#ckbShipHomeAddress").prop('checked') ) {
       id = $(this).attr("id");
-      targetId = "shippingaddress" + id.substr(id.indexOf("-"));
+      targetId = "shippingaddress" + id.substr(11); // 11 = next index of homeaddress string
       $("#" + targetId).val($(this).val());
+    }
+  });
+
+// Form Validation, Tooltipster
+  $('#householdinfoform :input').each(function() {
+    var tipelement = getTipContainer(this);
+
+    $(tipelement).tooltipster({
+       trigger: 'custom', 
+       onlyOne: false,
+       position: 'top',
+       multiple: false,
+       autoClose: false
+    });
+  });
+
+  function getTipContainer(element) {
+    var tipelement = element;
+    // if ( $(element).is(":checkbox") || $(element).is(":radio") ) {
+    //    tipelement = $(element).parents('.container').get(0);
+    // }
+    return tipelement;
+  }
+
+  $("#householdinfoform").validate({
+    rules: {
+      textinputFatherName: {required: true},
+      textinputFatherFamilyName: {required:true},
+      textinputMotherName: {required:true},
+      textinputMotherFamilyName: {required:true},
+      homeaddressStreetaddress1: {required:true},
+      homeaddressCity: {required:true},
+      homeaddressState: {required:true},
+      homeaddressZipcode: {required:true},
+      homeaddressCountry: {required:true},
+      shippingaddressStreetaddress1: {required:true},
+      shippingaddressCity: {required:true},
+      shippingaddressState: {required:true},
+      shippingaddressZipcode: {required:true},
+      shippingaddressCountry: {required:true},
+      phonenumber: {required:true},
+      emailaddress: {required:true, email:true},
+    },
+    messages: {
+      
+    },
+    errorPlacement: function(error, element) {
+      console.log('error', error)
+      var $element = $(element),
+        tipelement=element,
+        errtxt=$(error).text(),
+        last_error='';
+    
+      tipelement = getTipContainer(element);
+    
+      last_error = $(tipelement).data('last_error');
+      $(tipelement).data('last_error',errtxt);
+      console.log(errtxt)
+      console.log(last_error)
+      if(errtxt !=='' && errtxt != last_error) {
+        $(tipelement).tooltipster('content', errtxt);
+        $(tipelement).tooltipster('show');
+      }
+    },
+    success: function (label, element) {
+      var tipelement = getTipContainer(element);
+      $(tipelement).tooltipster('hide');
     }
   });
 });
 
 //Timer to auto update the database for Household Information
-// setInterval("updateFamilyData();",10000);
+setInterval("updateFamilyData();",10000);
 
 //This function request an Ajax Call to update the database's user table
 function updateFamilyData(){
@@ -509,7 +586,7 @@ function showStudent(email) {
 
 $(document).ready(function() {
 
-  $('.input-group input[required], .input-group textarea[required], .input-group select[required]').on('keyup change', function() {
+  /*$('.input-group input[required], .input-group textarea[required], .input-group select[required]').on('keyup change', function() {
       var $form = $(this).closest('form'),
       $group = $(this).closest('.input-group'),
       $addon = $group.find('.input-group-addon'),
@@ -548,7 +625,7 @@ $(document).ready(function() {
       }
   });
   
-  $('.input-group input[required], .input-group textarea[required], .input-group select[required]').trigger('change');
+  $('.input-group input[required], .input-group textarea[required], .input-group select[required]').trigger('change');*/
 });
 
 </script>
