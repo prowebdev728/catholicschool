@@ -1,0 +1,165 @@
+.input-group-addon.primary {
+  color: white;
+  background-color: #3276b1;
+  border-color: #285e8e; }
+
+.input-group-addon.success {
+  color: white;
+  background-color: #5cb85c;
+  border-color: #4cae4c; }
+
+.input-group-addon.info {
+  color: white;
+  background-color: #39b3d7;
+  border-color: #269abc; }
+
+.input-group-addon.warning {
+  color: white;
+  background-color: #f0ad4e;
+  border-color: #eea236; }
+
+.input-group-addon.danger {
+  color: white;
+  background-color: #d9534f;
+  border-color: #d43f3a; }
+
+.btn-opt.active,
+.btn-opt.active:hover,
+.btn-opt.active:active,
+.btn-opt.active:focus {
+  color: #fff;
+  background-color: #3f8b3f;
+  border-color: #398439; }
+
+.bhoechie-tab-content {
+  display: none; }
+  .bhoechie-tab-content.active {
+    display: block; }
+
+.input-group-addon.primary {
+  color: white;
+  background-color: #3276b1;
+  border-color: #285e8e; }
+
+.input-group-addon.success {
+  color: white;
+  background-color: #5cb85c;
+  border-color: #4cae4c; }
+
+.input-group-addon.info {
+  color: white;
+  background-color: #39b3d7;
+  border-color: #269abc; }
+
+.input-group-addon.warning {
+  color: white;
+  background-color: #f0ad4e;
+  border-color: #eea236; }
+
+.input-group-addon.danger {
+  color: white;
+  background-color: #d9534f;
+  border-color: #d43f3a; }
+
+/*** Button Style ***/
+.btn-opt.active,
+.btn-opt.active:hover,
+.btn-opt.active:active,
+.btn-opt.active:focus {
+  color: #fff;
+  background-color: #3f8b3f;
+  border-color: #398439; }
+
+/*** Tab's Style ***/
+.bhoechie-tab-content {
+  display: none; }
+
+.bhoechie-tab-content.active {
+  display: block; }
+
+/*** table class modify ***/
+table.table {
+  margin-bottom: 0px !important; }
+
+.titlelabel {
+  margin-top: 0;
+  color: #55518a; }
+
+.homeaddress, .shippingaddress {
+  display: block;
+  padding: 10px 0px 0px 10px;
+  border-top: 1px solid #ddd;
+  font-size: 18px; }
+
+.homeaddress-city, .shippingaddress-city {
+  width: 50%;
+  display: inline-block; }
+
+.homeaddress-state, .shippingaddress-state {
+  width: 18%;
+  display: inline-block; }
+
+.homeaddress-zipcode, .shippingaddress-zipcode {
+  width: 28%;
+  display: inline-block; }
+
+.homeaddress-country, .shippingaddress-country {
+  margin-left: 52%; }
+
+/*** Student Infomation ***/
+.student-name-bar {
+  height: 40px;
+  margin: 0 0 10px 15px;
+  border-bottom: 1px solid #bbb; }
+
+.student-name-bar label {
+  font-size: 22px;
+  font-weight: normal; }
+
+.student-name-bar button {
+  float: right;
+  margin-left: 15px; }
+
+.student-birth-grade {
+  margin: 0 0 30px 15px;
+  font-size: 15px;
+  font-weight: normal;
+  color: #555; }
+
+.student-birth-grade :nth-child(3) {
+  margin-left: 35px; }
+
+.student-enrollmentoptions {
+  width: 50%;
+  margin: 0 0 10px 15px;
+  border-bottom: 1px solid #bbb;
+  font-size: 18px; }
+
+.student-enrollmenttype label {
+  margin: 0 0 10px 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555; }
+
+.students-not-enrolled {
+  margin: 10px;
+  background-color: #ffffe0;
+  border-radius: 3px;
+  padding: 5px; }
+
+.students-not-enrolled table,
+.students-not-enrolled table th {
+  text-align: center;
+  padding: 6px; }
+
+.students-not-enrolled table td {
+  padding: 0 6px 9px 6px; }
+
+.students-not-enrolled table tbody tr td button#btnDispalyDeleteStudentModal {
+  display: none; }
+
+.students-not-enrolled table tbody tr:hover td button#btnDispalyDeleteStudentModal {
+  display: block; }
+
+#btnAddSelectedStudents {
+  margin: 0 12px 0 12px; }

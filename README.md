@@ -1,2 +1,5 @@
-# catholicschool
-PHP, Bootstrap, JavaScript, jQuery, Ajax
+# INSTALL
+npm install
+-------------------------
+# DEV
+npm start
