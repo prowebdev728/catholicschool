@@ -1,9 +1,9 @@
 ### INSTALL
 npm install
--------------------------
+
 ### DEV
 npm start
-=======
+
 ### catholicschool
 PHP, Bootstrap, JavaScript, jQuery, Ajax
 <h4>Tech Stack</h4>
