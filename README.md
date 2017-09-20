@@ -1,11 +1,10 @@
-<<<<<<< HEAD
-# INSTALL
+### INSTALL
 npm install
 -------------------------
-# DEV
+### DEV
 npm start
 =======
-# catholicschool
+### catholicschool
 PHP, Bootstrap, JavaScript, jQuery, Ajax
 <h4>Tech Stack</h4>
 <ul>
@@ -15,4 +14,3 @@ PHP, Bootstrap, JavaScript, jQuery, Ajax
 <li>Bootstrap 3</li>
 <li>Ajax, JSON</li>
 </ul>
->>>>>>> origin/master
