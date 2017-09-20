@@ -288,7 +288,7 @@ $(document).ready(function() {
     }
   });
 
-// Form Validation, Tooltipster
+  // Form Validation, Tooltipster
   $('#householdinfoform :input').each(function() {
     var tipelement = getTipContainer(this);
 

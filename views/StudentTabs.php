@@ -1,6 +1,6 @@
 <?php
 
-include 'db_functions.php';
+include '../app/db_functions.php';
 
 $studentEmail = $_GET['email']; //email
 
