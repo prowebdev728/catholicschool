@@ -38,7 +38,7 @@
         <br>
         <label for="password">Password</label>
         <div class="input-group" data-validate="password">
-          <input type="text" class="form-control" name="password" id="password" placeholder="Password" required>
+          <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
           <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span> 
         </div>
       </div>
