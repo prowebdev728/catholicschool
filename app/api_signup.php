@@ -1,9 +1,9 @@
 <?php
 
-include 'api_model_functions.php';
+include 'model_functions.php';
 
-$email = $_GET['email'];
-$password = $_GET['password'];
+$email = $_POST['email'];
+$password = $_POST['password'];
 
 $response = signup($email, $password);
 

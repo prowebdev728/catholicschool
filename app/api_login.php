@@ -1,14 +1,22 @@
 <?php
 
-include 'api_model_functions.php';
+include 'model_functions.php';
 
-$email = $_GET['email'];
-$password = $_GET['password'];
+$email = $_POST['email'];
+$password = $_POST['password'];
 
-$result = loginCheck($email, $password);
+$stmt = loginCheck($email, $password);
 
-$response['status'] = $result ? true : false;
-
-echo json_encode($response);
+if ($stmt->rowCount()) {
+	$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+	$response['statusCode'] = http_response_code();
+	$response['message'] = 'Success';
+	$response['Account_Id'] = $rows[0]['Account_Id'];
+} else {
+	$response['statusCode'] = http_response_code();
+	$response['message'] = 'Failed';
+}
+exit(json_encode($response));
 
 ?>
