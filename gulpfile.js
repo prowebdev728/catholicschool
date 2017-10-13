@@ -5,7 +5,7 @@ gulp.task('sass', function() {
   return gulp.src('scss/**/*.scss')
     .pipe($.sass({
       includePaths: [''],
-      outputStyle: 'compressed' // if css compressed **file size**
+      // outputStyle: 'compressed' // if css compressed **file size**
     })
       .on('error', $.sass.logError))
     .pipe($.autoprefixer({
