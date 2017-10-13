@@ -1,0 +1,58 @@
+.student-name-bar {
+  height: 40px;
+  margin: 0 0 10px 15px;
+  border-bottom: 1px solid #bbb;
+}
+.student-name-bar label {
+  font-size: 22px;
+  font-weight: normal;
+}
+.student-name-bar button {
+  float: right;
+  margin-left: 15px;
+}
+.student-birth-grade {
+  margin: 0 0 30px 15px;
+  font-size: 15px;
+  font-weight: normal;
+  color: #555;
+}
+.student-birth-grade :nth-child(3) {
+  margin-left: 35px;
+}
+.student-enrollmentoptions {
+  width: 50%;
+  margin: 0 0 10px 15px;
+  border-bottom: 1px solid #bbb;
+  font-size: 18px;
+}
+.student-enrollmenttype label{
+  margin: 0 0 10px 15px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555;
+}
+
+.students-not-enrolled {
+  margin: 10px;
+  background-color: #ffffe0;
+  border-radius: 3px;
+  padding: 5px;
+}
+.students-not-enrolled table,
+.students-not-enrolled table th {
+  text-align: center;
+  padding: 6px;
+}
+.students-not-enrolled table td {
+  padding: 0 6px 9px 6px;
+}
+.students-not-enrolled table tbody tr td button#btnDispalyDeleteStudentModal {
+  display: none;
+}
+.students-not-enrolled table tbody tr:hover td button#btnDispalyDeleteStudentModal {
+  display: block;
+}
+#btnAddSelectedStudents {
+  margin: 0 12px 0 12px;
+}

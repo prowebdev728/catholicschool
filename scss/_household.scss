@@ -1,0 +1,63 @@
+#household_page {
+	> h3 {
+		margin-top: 0;
+		color: #55518a;
+	}
+
+	.alert {
+		display: none;
+	}
+
+	.titlelabel {
+		margin-top: 0;
+		color:#55518a;
+		border-bottom: 1px solid #ddd;
+	}
+
+	.homeaddress {
+		padding-top: 0px;
+	}
+
+	.homeaddress-city, 
+	.shippingaddress-city {
+		width: 35%;
+		display: inline-block;
+	}
+
+	.homeaddress-state, 
+	.shippingaddress-state {
+		width: 18%;
+		display: inline-block;
+	}
+
+	.homeaddress-zipcode, 
+	.shippingaddress-zipcode {
+		width: 14%;
+		display: inline-block;
+	}
+
+	.homeaddress-country, 
+	.shippingaddress-country {
+		width: 30%;
+		display: inline-block;
+	}
+
+	input::-webkit-input-placeholder {
+	  font-style: italic; 
+	}
+	input::-moz-placeholder {
+	  font-style: italic;
+	}
+	input:-ms-input-placeholder {
+	  font-style: italic;
+	}
+	input:-moz-placeholder {
+	  font-style: italic;
+	}
+
+	input[type=submit] {
+		margin-top: 20px;
+		float: right;
+	}
+}
+

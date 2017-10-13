@@ -1,0 +1,30 @@
+// Tab Menu
+.bhoechie-tab-menu {
+	.list-group {
+		.list-group-item {
+			display: flex;
+			align-items: center;
+
+			span {
+				margin-left: 15px;
+				font-size: 15px;
+			}
+		}
+		.list-group-item:hover,
+		.list-group-item.active {
+			span {
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+//Tab Content
+.bhoechie-tab-content {
+  display: none;
+  padding-bottom: 20px;
+
+  &.active {
+    display: block;
+  }
+}
