@@ -19,7 +19,7 @@
   </div>
 
   <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
-    <form id="login_form" action="action.php" method="POST">
+    <form id="login_form" action="action.php" method="post">
       <div class="alert alert-info alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         Please input email and password for log in.
@@ -28,10 +28,12 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <strong>Log in failed!</strong> Plese input valid email and password.
       </div>
+
+      <input type="hidden" id="Account_Id" name="Account_Id" value="">
       <div class="form-group">
         <label for="email">E-mail</label>
         <div class="input-group" data-validate="email">
-          <input type="text" class="form-control" name="email" id="email" placeholder="Email" required>
+          <input type="text" class="form-control" name="email" id="email" placeholder="Email" autofocus required>
           <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span> 
         </div>
         <span class="help-block">Please provide a valid email address</span> 
@@ -42,12 +44,12 @@
           <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span> 
         </div>
       </div>
-      <div class="float-left m-t-30">
+      <div class="controll-bar">
         <a href="../index.php">
           <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
         </a>
+        <button id="login" type="button" class="btn btn-primary" disabled>Log In</button>
       </div>
-      <button id="login" type="button" class="btn btn-primary float-right m-t-20" disabled>Log In</button>
     </form>
   </div>
 
@@ -100,21 +102,21 @@
 
     $('#login').on('click', function(e) {
       $.ajax({
-        type: "GET",
+        type: "post",
         url: "../app/api_login.php",
         data: {
           email: $('#email').val(),
           password: $('#password').val()
         },
         dataType: "json",
-        success: function(result) {
-          console.log('resulst', result.status);
-          if (result.status === true)
+        success: function(response) {
+          console.log(response)
+          if (response.statusCode == '200' && response.message == 'Success') {
+            $('#Account_Id').val(response.Account_Id);
             $('#login_form').submit();
-          else {
+          } else {
             $('.alert-info').css('display', 'none');
             $('.alert-warning').css('display', 'block');
-            console.log(result.status);
           }
         },
         error: function() {

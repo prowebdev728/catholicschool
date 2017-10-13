@@ -1,28 +1,28 @@
 <?php
 
-include '../app/db_functions.php';
+include '../app/model_functions.php';
 
-$studentEmail = $_GET['email']; //email
-
-$result = getStudent($studentEmail);
+$studentEmail = $_POST['email']; //email
+$stmt = getStudent($studentEmail, true); // get student data
 
 $res = "<ul id='studenteNavTab' class='nav nav-tabs'>";
 $tabContent = "";
 
 $i = 0;
-if ($result->num_rows > 0) {
-  while ($row = $result->fetch_assoc()) {
-    $res .= "<li class='". ($i ? "" : "active") ."'><a data-toggle='tab' href='#student{$row['id']}'>{$row['first_name']} {$row['mi']} {$row['last_name']}</a></li>";
+if ($stmt->rowCount() > 0) {
+  $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  foreach ($rows as $row) {
+    $res .= "<li class='". ($i ? "" : "active") ."'><a data-toggle='tab' href='#student{$row['Student_Id']}'>{$row['First_Name']} {$row['Middle_Name']} {$row['Last_Name']}</a></li>";
 
-    $tabContent .= "<div id='student{$row['id']}' class='". ($i ? "tab-pane" : "tab-pane fade active in") ."'>";
+    $tabContent .= "<div id='student{$row['Student_Id']}' class='". ($i ? "tab-pane" : "tab-pane fade active in") ."'>";
     $tabContent .= "<div class='form-group'>
         <div class='student-name-bar'>
-          <label><span id='first_name'>{$row['first_name']}</span> <span id='mi'>{$row['mi']}</span> <span id='last_name'>{$row['last_name']}</span></label>
-          <button type='button' class='btn btn-warning' onclick='removeStudent(event, {$row['id']})'><span class='glyphicon glyphicon-remove'></span> Remove</button>
-          <button type='button' class='btn btn-primary' onclick='editStudent(event, {$row['id']})'><span class='glyphicon glyphicon-pencil'></span> Edit</button>
+          <label><span id='First_Name'>{$row['First_Name']}</span> <span id='Middle_Name'>{$row['Middle_Name']}</span> <span id='Last_Name'>{$row['Last_Name']}</span></label>
+          <button type='button' class='btn btn-warning' onclick='removeStudent(event, {$row['Student_Id']})'><span class='glyphicon glyphicon-remove'></span> Remove</button>
+          <button type='button' class='btn btn-primary' onclick='editStudent(event, {$row['Student_Id']})'><span class='glyphicon glyphicon-pencil'></span> Edit</button>
         </div>
         <div class='student-birth-grade'>
-          <label>Date of Birth:</label> <span id='date_birth'>{$row['date_birth']}</span> <label>Grade:</label> <span id='grade'>{$row['grade']}</span>
+          <label>Date of Birth:</label> <span id='Birth_Date'>{$row['Birth_Date']}</span> <label>Grade:</label> <span id='Grade'>{$row['Grade']}</span> <input id='Grade_Id' type='hidden' value='{$row["Grade_Id"]}'>
         </div>
         <div class='student-enrollmentoptions'>
           Enrollment Options
@@ -50,17 +50,17 @@ $res .= $tabContent; // Student individual info Tab
 // Add Student Tab
 $res .= "<div id='studentAdd' class='tab-pane'>
   <div class='studentAddBox'>
-    <div class='form-group col-md-4'>
+    <div class='form-group col-md-3'>
       First Name<br>
-      <input id='studentFirstName' type='text' placeholder='required' class='form-control'>
+      <input id='studentFirstName' type='text' class='form-control'>
     </div>
-    <div class='form-group col-md-1' style='min-width:75px'>
-      M.I.<br>
-      <input id='studentMI' type='text' placeholder='' class='form-control'>
+    <div class='form-group col-md-3' style='min-width:75px'>
+      Middle Name<br>
+      <input id='studentMiddleName' type='text' placeholder='' class='form-control'>
     </div>
-    <div class='form-group col-md-4'>
+    <div class='form-group col-md-3'>
       Last Name<br>
-      <input id='studentLastName' type='text' placeholder='required' class='form-control'>
+      <input id='studentLastName' type='text' class='form-control'>
     </div>
     <div class='form-group col-md-4'>
       Date of Birth<br>
@@ -122,11 +122,12 @@ echo $res;
 ?>
 
 <script type="text/javascript">
+var gradeAry = ['', 'First Grade', 'Second Grade', 'Third Grade', 'Fourth Grade', 'Fifth Grade', 'Sixth Grade', 'Seventh Grade', 'Eighth Grade', 'Ninth Grade', 'Tenth Grade', 'Eleventh Grade', 'Twelfth Grade'];
 $(document).ready(function() {
   // Insert Grade Select Element in Add Student Tab
   insertGradeSelectElement('#studentAdd select#selectGrade');
   // Insert Grade Select Element in table Add Student Tab When exist removed student
-  insertGradeSelectElement('.notEnrolledstudentAddBox select#grade ');
+  insertGradeSelectElement('.notEnrolledstudentAddBox select#Grade ');
 
   // datepicker configuration
   let start = moment().subtract(5, 'years');
@@ -193,28 +194,22 @@ $(document).ready(function() {
 
 // Insert Grade Select Element
 function insertGradeSelectElement(selector) {
-  var gradeStr = "<option></option><option>Pre-Kindergarten</option><option>Kindergarten</option>";
+  let gradeStr = "";
 
-  for (let i = 1; i <= 12; i++) {
-    let grade = "";
-    if (i == 1) grade = "1st";
-    else if (i == 2) grade = "2nd";
-    else if (i == 3) grade = "3rd";
-    else grade = i + "th";
-
-    gradeStr += "<option>" + grade +" Grade</option>";
+  for (let i = 0; i <= 12; i++) {
+    gradeStr += "<option value='" + i + "'>" + gradeAry[i] +"</option>";
   }
+
   $(selector).html(gradeStr);
 }
 // Add Student
 function addStudent() {
-
-  let email = $('#textinputEmail').val();
+  let email = $('#email').val();
   let studentFirstName = $.trim($('#studentAdd #studentFirstName').val());
-  let studentMI = $.trim($('#studentAdd #studentMI').val());
+  let studentMiddleName = $.trim($('#studentAdd #studentMiddleName').val());
   let studentLastName = $.trim($('#studentAdd #studentLastName').val());
-  let studentGrade = $.trim($('#studentAdd #selectGrade').val());
-  let studentDateBirth = $.trim($('#studentAdd #studentBirthdayDatepicker input').val());
+  let studentGradeId = $.trim($('#studentAdd #selectGrade').val());
+  let studentBirthDate = $.trim($('#studentAdd #studentBirthdayDatepicker input').val());
 
   if (studentFirstName == '') {
     alert('Please input First Name.');
@@ -222,21 +217,25 @@ function addStudent() {
   }
 
   $.ajax({
-    type: "POST",
-    url: "process_ajax_student.php",
+    type: "post",
+    url: "../app/api_student.php",
     data: {
       proc: 'addStudent',
       email: email,
+      Account_Id: Account_Id,
       studentFirstName: studentFirstName,
-      studentMI: studentMI,
+      studentMiddleName: studentMiddleName,
       studentLastName: studentLastName,
-      studentGrade: studentGrade,
-      studentDateBirth: studentDateBirth
+      studentGradeId: studentGradeId,
+      studentBirthDate: studentBirthDate
     },
-    success: function(result) {
-      console.log(result);
-      $('#studentAdd input, #studentAdd select').val('');
-      showStudent($('#textinputEmail').val()); // reload student tabs
+    dataType: "json",
+    success: function(response) {
+      console.log(response);
+      if (response.statusCode == '200' && response.message == 'Success') {
+        $('#studentAdd input, #studentAdd select').val('');
+        showStudent($('#email').val()); // reload student tabs
+      }
     }, 
     error: function() {
       console.log('An error has occurred when save in Add Student Tab');
@@ -249,7 +248,7 @@ function updateStudent(studentId) {
 
   let blockId = 'student' + studentId;
   let studentFirstName = $.trim($('#'+blockId+' #studentFirstName').val());
-  let studentMI = $.trim($('#'+blockId+' #studentMI').val());
+  let studentMiddleName = $.trim($('#'+blockId+' #studentMiddleName').val());
   let studentLastName = $.trim($('#'+blockId+' #studentLastName').val());
   let studentGrade = $.trim($('#'+blockId+' #selectGrade').val());
   let studentDateBirth = $.trim($('#'+blockId+' #studentBirthdayDatepicker input').val());
@@ -260,19 +259,23 @@ function updateStudent(studentId) {
   }
 
   $.ajax({
-    type: "POST",
-    url: "process_ajax_student.php",
+    type: "post",
+    url: "../app/api_student.php",
     data: {
       proc: 'updateStudent',
       studentId: studentId,
       studentFirstName: studentFirstName,
-      studentMI: studentMI,
+      studentMiddleName: studentMiddleName,
       studentLastName: studentLastName,
       studentGrade: studentGrade,
       studentDateBirth: studentDateBirth
     },
-    success: function(result) {
-      showStudent($('#textinputEmail').val()); // reload student tabs
+    dataType: "json",
+    success: function(response) {
+      console.log(response)
+      if (response.statusCode == '200' && response.message == 'Success') {
+        showStudent($('#email').val()); // reload student tabs
+      }
     }, 
     error: function() {
       console.log('An error has occurred when save in Add Student Tab');
@@ -285,15 +288,18 @@ function removeStudent(event, studentId) {
   event.preventDefault();
   
   $.ajax({
-    type: "POST",
-    url: "process_ajax_student.php",
+    type: "post",
+    url: "../app/api_student.php",
     data: {
       proc: 'removeStudent',
       studentId: studentId
     },
-    success: function(result) {
-      console.log(result)
-      showStudent($('#textinputEmail').val()); // reload student tabs
+    dataType: "json",
+    success: function(response) {
+      console.log(response)
+      if (response.statusCode == '200' && response.message == 'Success') {
+        showStudent($('#email').val()); // reload student tabs  
+      }
     }, 
     error: function() {
       console.log('An error has occurred when remove student in Student Tab');
@@ -306,11 +312,11 @@ function editStudent(event, studentId) {
   event.preventDefault();
 
   let blockId = 'student' + studentId;
-  let first_name = $('#'+blockId+' #first_name').text();
-  let mi = $('#'+blockId+' #mi').text();
-  let last_name = $('#'+blockId+' #last_name').text();
-  let date_birth = $('#'+blockId+' #date_birth').text();
-  let grade = $('#'+blockId+' #grade').text();
+  let First_Name = $('#'+blockId+' #First_Name').text();
+  let Middle_Name = $('#'+blockId+' #Middle_Name').text();
+  let Last_Name = $('#'+blockId+' #Last_Name').text();
+  let Birth_Date = $('#'+blockId+' #Birth_Date').text();
+  let Grade_Id = $('#'+blockId+' #Grade_Id').val();
   let originForm = $('#'+blockId).html();
   let editForm = $('.studentAddBox').html();
 
@@ -331,11 +337,11 @@ function editStudent(event, studentId) {
       $('#studentBirthdayDatepicker input').val(start.format('YYYY-MM-DD'));
     }
   );
-  $('#'+blockId+' #studentFirstName').val(first_name);
-  $('#'+blockId+' #studentMI').val(mi);
-  $('#'+blockId+' #studentLastName').val(last_name);
-  $('#'+blockId+' #studentBirthdayDatepicker input').val(date_birth);
-  $('#'+blockId+' #selectGrade option:contains("'+grade+'")').attr('selected', 'selected');
+  $('#'+blockId+' #studentFirstName').val(First_Name);
+  $('#'+blockId+' #studentMiddleName').val(Middle_Name);
+  $('#'+blockId+' #studentLastName').val(Last_Name);
+  $('#'+blockId+' #studentBirthdayDatepicker input').val(Birth_Date);
+  $('#'+blockId+' #selectGrade option[value='+Grade_Id+']').attr('selected', 'selected');
   // 'Cancel' button, Return origin page
   $('#'+blockId+' #btnCancelAddStudent').on('click', function(e) {
     e.preventDefault();
@@ -350,16 +356,19 @@ function editStudent(event, studentId) {
 // Revert Student
 function revertStudent(studentIds) {
   $.ajax({
-    type: "POST",
-    url: "process_ajax_student.php",
+    type: "post",
+    url: "../app/api_student.php",
     data: {
       proc: 'revertStudent',
       studentIds: studentIds
     },
-    success: function(result) {
-      console.log(result)
-      showStudent($('#textinputEmail').val());
-      displayNotEnrolledStudent();
+    dataType: "json",
+    success: function(response) {
+      if (response.statusCode == '200' && response.message == 'Success') {
+        console.log('response', response)
+        showStudent($('#email').val());
+        displayNotEnrolledStudent();
+      }
     }, 
     error: function() {
       console.log('Error:Add Selected Students button event');
@@ -374,34 +383,30 @@ function displayNotEnrolledStudent() {
   //Init Button
   $('#btnAddSelectedStudents').attr('disabled', 'disabled');
   $.ajax({
-    type: "GET",
-    url: "process_ajax_student.php",
+    type: "post",
+    url: "../app/api_student.php",
     data: {
       proc: 'getNotEnrolledStudent',
-      email: $('#textinputEmail').val()
+      email: $('#email').val()
     },
     dataType: "json",
-    success: function(result) {
-      if (result.length) {
+    success: function(response) {
+      if (response.statusCode == '200' && response.message == 'Success') {
+        let datas = response.datas;
+        
         $('.studentAddBox').css('display', 'none');
         $('.notEnrolledstudentAddBox').css('display', 'block');
 
         let rows = "<tr>";
         rows += "<th>Enrolling</th>";
         rows += "<th>Student</th>";
-        rows += "<th>Grade</th>";
         rows += "<th></th>";
         rows += "</tr>";
-        let gradeAry = ['', 'Pre-Kindergarten', 'Kindergarten', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade', '7th Grade', '8th Grade', '9th Grade', '10th Grade', '11th Grade', '12th Grade'];
-        for (let i = 0; i < result.length; i++) {
-          let row = "<tr id='"+ result[i].id +"'>";
+
+        for (i in datas) {
+          let row = "<tr id='"+ datas[i].Student_Id +"'>";
           row += "<td><input id='enrolling' type='checkbox'></td>";
-          row += "<td id='name'>"+ result[i].first_name + " " + result[i].mi + " " + result[i].last_name +"</td>";
-          row += "<td><select id='grade' class='form-control'>";
-          for (c in gradeAry) {
-            row += "<option "+ (gradeAry[c]==result[i].grade ? "selected" : "") +">"+ gradeAry[c] +"</option>";
-          }
-          row += "</select></td>";
+          row += "<td id='name' style='padding-left:15px; padding-right:15px;'>"+ datas[i].First_Name + " " + datas[i].Middle_Name + " " + datas[i].Last_Name +"</td>";
           row += "<td style='width:75px'><button id='btnDispalyDeleteStudentModal' class='btn btn-xs btn-warning' data-toggle='modal' data-target='#deleteStudentModal'><span class='glyphicon glyphicon-remove'></span> <span>Delete</span></button></td>";
           row += "</tr>";
           rows += row;
@@ -451,16 +456,19 @@ function displayNotEnrolledStudent() {
 function deleteStudent(studentId) {
   
   $.ajax({
-    type: "POST",
-    url: "process_ajax_student.php",
+    type: "post",
+    url: "../app/api_student.php",
     data: {
       proc: 'deleteStudent',
       studentId: studentId
     },
-    success: function(result) {
+    dataType: "json",
+    success: function(response) {
       console.log(result)
-      displayNotEnrolledStudent();
-      $('#deleteStudentModal').modal('hide');
+      if (response.statusCode == '200' && response.message == 'Success') {
+        displayNotEnrolledStudent();
+        $('#deleteStudentModal').modal('hide');
+      }
     }, 
     error: function() {
       console.log('Error: Delete button event in Modal Dialog');

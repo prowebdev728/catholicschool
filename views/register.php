@@ -19,10 +19,10 @@
   </div>
 
   <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
-    <form id="signup_form" action="action.php"  method="post">
+    <form id="signup_form" action="login.php"  method="post">
       <div class="alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Please input valid email and password.</strong>
+        <strong>Warning!</strong> Please input valid email and password.
       </div>
       <div class="alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -50,12 +50,12 @@
           <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
         </div>
       </div>
-      <div class="float-left m-t-30">
+      <div class="controll-bar">
         <a href="../index.php">
           <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
         </a>
+        <button id="signup" type="button" class="btn btn-primary" disabled>Create Account</button>
       </div>
-      <button id="signup" type="button" class="btn btn-primary float-right m-t-20" disabled>Create Account</button>
     </form>
   </div>
 
@@ -142,7 +142,7 @@
 
     $('#signup').on('click', function(e) {
       $.ajax({
-        type: "GET",
+        type: "post",
         url: "../app/api_signup.php",
         data: {
           email: $('#email').val(),
@@ -151,10 +151,10 @@
         dataType: "json",
         success: function(result) {
           console.log(result);
-          if (result.double === true) {
+          if (result.double == true) {
             $('.alert').css('display', 'none');
             $('.alert-warning').css('display', 'block');
-          } else if (result.status === true) {
+          } else if (result.status == true) {
             $('.alert').css('display', 'none');
             $('.alert-success').css('display', 'block');
             $('#signup_form').submit();
