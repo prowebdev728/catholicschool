@@ -5,147 +5,33 @@
 html,
 body {
   min-height: 100%;
-  background-color: #ffffff;
+  background-color: #fff;
   font-weight: 400;
 }
 a {
 	text-decoration: none !important;
 }
-
+ 
 // index.php
-section#index {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  h3 {
-    padding: 16px 0;
-    font-weight: bold;
-    line-height: 1.3;
-  }
-  button {
-    width: 120px;
-    margin: 16px;
-    font-size: 16px;
-  }
-}
-
-// login, signup form
-#login_form,
-#signup_form {
-  button {
-    font-size: 16px;
-  }
-}
-
-// Tab
-.bhoechie-tab-content {
-  display: none;
-  padding-bottom: 20px;
-
-  &.active {
-    display: block;
-  }
-}
-
-/*** table class modify ***/
-table.table {
-  margin-bottom: 0px !important;
-}
-
-.titlelabel {
-  margin-top: 0;
-  color:#55518a;
-  border-bottom: 1px solid #ddd;
-}
-
-.homeaddress {
-	padding-top: 0px;
-}
-
-.homeaddress-city, 
-.shippingaddress-city {
-	width: 35%;
-	display: inline-block;
-}
-.homeaddress-state, 
-.shippingaddress-state {
-	width: 18%;
-	display: inline-block;
-}
-.homeaddress-zipcode, 
-.shippingaddress-zipcode {
-	width: 14%;
-	display: inline-block;
-}
-.homeaddress-country, 
-.shippingaddress-country {
-	width: 30%;
-  display: inline-block;
-}
-
-/*** Student Infomation ***/
-.student-name-bar {
-  height: 40px;
-  margin: 0 0 10px 15px;
-  border-bottom: 1px solid #bbb;
-}
-.student-name-bar label {
-  font-size: 22px;
-  font-weight: normal;
-}
-.student-name-bar button {
-  float: right;
-  margin-left: 15px;
-}
-.student-birth-grade {
-  margin: 0 0 30px 15px;
-  font-size: 15px;
-  font-weight: normal;
-  color: #555;
-}
-.student-birth-grade :nth-child(3) {
-  margin-left: 35px;
-}
-.student-enrollmentoptions {
-  width: 50%;
-  margin: 0 0 10px 15px;
-  border-bottom: 1px solid #bbb;
-  font-size: 18px;
-}
-.student-enrollmenttype label{
-  margin: 0 0 10px 15px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #555;
-}
-
-.students-not-enrolled {
-  margin: 10px;
-  background-color: #ffffe0;
-  border-radius: 3px;
-  padding: 5px;
-}
-.students-not-enrolled table,
-.students-not-enrolled table th {
-  text-align: center;
-  padding: 6px;
-}
-.students-not-enrolled table td {
-  padding: 0 6px 9px 6px;
-}
-.students-not-enrolled table tbody tr td button#btnDispalyDeleteStudentModal {
-  display: none;
-}
-.students-not-enrolled table tbody tr:hover td button#btnDispalyDeleteStudentModal {
-  display: block;
-}
-#btnAddSelectedStudents {
-  margin: 0 12px 0 12px;
-}
+@import 'index';
+// login
+@import 'login';
+// register
+@import 'register';
+// action
+@import 'action';
+// household
+@import 'household';
+// household
+@import 'student';
+// course credit
+@import 'course';
+// supplemental materials
+@import 'supplement';
+// application summary
+@import 'summary';
+// submission & payments
+@import 'submission';
 
 @media (min-width: 1200px) {
 	
