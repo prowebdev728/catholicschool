@@ -8,8 +8,8 @@
   <link rel="icon" href="images/favicon.ico">
   <title>Catholic School | Register</title>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="../css/app.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/app.css">
 </head>
 <body>
   <div class="jumbotron">
@@ -30,7 +30,7 @@
       </div>
       <div class="alert alert-danger alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Signup Failed!</strong>
+        Sorry, some unknown error occurred!  Please contact us at  <strong>support@ada.school</strong> to resolve this problem.
       </div>
       <div class="form-group">
         <label for="email">E-mail Address</label>
@@ -59,9 +59,9 @@
     </form>
   </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/moment.min.js"></script>
 <script>
   $(document).ready(function() {
     $('.alert').css('display', 'none');
@@ -164,7 +164,8 @@
           }
         },
         error: function() {
-          console.log('An error has occurred when signup');
+          $('.alert').css('display', 'none');
+          $('.alert-danger').css('display', 'block'); 
         },
       });
     });

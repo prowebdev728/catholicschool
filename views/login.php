@@ -8,8 +8,8 @@
   <link rel="icon" href="images/favicon.ico">
   <title>Catholic School | Login</title>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="../css/app.css">  
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/app.css">  
 </head>
 <body>
   <div class="jumbotron">
@@ -53,9 +53,9 @@
     </form>
   </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/moment.min.js"></script>
 <script>
   $(document).ready(function() {
     $('.alert-warning').css('display', 'none');

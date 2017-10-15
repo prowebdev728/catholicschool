@@ -8,8 +8,8 @@
 	<link rel="icon" href="images/favicon.ico">
 	<title>Catholic School</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/app.css">  
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/app.css">  
 </head>
 <body>
 <section id="index">
@@ -24,8 +24,8 @@
 	</div>
 </section>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('section#index #yes').on('click', function() {

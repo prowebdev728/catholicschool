@@ -32,15 +32,10 @@ $Email2 = $rows ? $rows[0]["Email2"] : '';
   <link rel="icon" href="images/favicon.ico">
   <title>Catholic School</title>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.tooltipster/4.2.5/css/tooltipster.bundle.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-  <link rel="stylesheet" href="../css/app.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/tooltipster.bundle.min.css">
+  <link rel="stylesheet" href="../css/daterangepicker.css" />
+  <link rel="stylesheet" href="../css/app.css">  
 </head>
 <body>
   <header>
@@ -122,6 +117,11 @@ $Email2 = $rows ? $rows[0]["Email2"] : '';
       </div>
     </div>
   </section>
+
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/moment.min.js"></script>
+  <script src="../js/daterangepicker.js"></script>
 
   <script>
     var Account_Id = "<?php echo $_POST['Account_Id'];?>";
