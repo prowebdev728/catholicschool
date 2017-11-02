@@ -5,7 +5,7 @@ function loginCheck($email, $password) {
 	require("db_connection.php");
 
   $stmt = $db->prepare("SELECT * FROM account AS a
-    LEFT JOIN wordpress2.wp_users AS w ON a.wp_users_ID=w.ID
+    LEFT JOIN wordpress.wp_users AS w ON a.wp_users_ID=w.ID
     WHERE w.user_email=? AND w.user_pass=? AND a.active=1");
   $stmt->execute(array($email, $password));
 
@@ -21,7 +21,7 @@ function signup($email, $password) {
 	$data['double'] = false;
 	$data['status'] = false;
 
-  $stmt = $db->prepare("SELECT * FROM wordpress2.wp_users WHERE user_email=?");
+  $stmt = $db->prepare("SELECT * FROM wordpress.wp_users WHERE user_email=?");
   $stmt->execute(array($email));
   $row_count = $stmt->rowCount();
   $stmt->closeCursor();
@@ -29,7 +29,7 @@ function signup($email, $password) {
   if ($stmt->rowCount()) {
   	$data['double'] = true;
   } else {
-    $st1 = $db->prepare("INSERT INTO wordpress2.wp_users SET user_email=:email, user_pass=:password");
+    $st1 = $db->prepare("INSERT INTO wordpress.wp_users SET user_email=:email, user_pass=:password, user_status='1'");
     try { 
       $st1->execute(array(':email' => $email, ':password' => $password));
       $insert_wp_users_ID = $db->lastInsertId();
@@ -38,21 +38,20 @@ function signup($email, $password) {
       $st2 = $db->prepare("INSERT INTO contactperson SET Email1=?");
       try { 
         $st2->execute(array($email));
-        $insert_ContactPerson_Id = $db->lastInsertId();
         $st2->closeCursor();
 
-        $st3 = $db->prepare("INSERT INTO account SET wp_users_ID=:wp_users_ID, active='1', Parent_Or_Guardian_1_Id=:Parent_Or_Guardian_1_Id, Parent_Or_Guardian_2_Id=:Parent_Or_Guardian_2_Id");
+        $st3 = $db->prepare("INSERT INTO account SET wp_users_ID=:wp_users_ID, active='1'");
         try { 
-          $st3->execute(array(':wp_users_ID' => $insert_wp_users_ID, ':Parent_Or_Guardian_1_Id' => $insert_ContactPerson_Id, ':Parent_Or_Guardian_2_Id' => $insert_ContactPerson_Id));
+          $st3->execute(array(':wp_users_ID' => $insert_wp_users_ID));
           $data['status'] = true;
         } catch(PDOExecption $e) { 
-          print "Error!: " . $e->getMessage() . "</br>"; 
+          print "Error!: " . $e->getMessage(); 
         }
       } catch(PDOExecption $e) { 
-        print "Error!: " . $e->getMessage() . "</br>"; 
+        print "Error!: " . $e->getMessage(); 
       }
     } catch(PDOExecption $e) { 
-      print "Error!: " . $e->getMessage() . "</br>"; 
+      print "Error!: " . $e->getMessage(); 
     }
   }
 
@@ -77,12 +76,14 @@ function getContactPerson($email) {
 function setHousehold($params) {
   require("db_connection.php");
 
-  $stmt = $db->prepare("SELECT * FROM contactperson WHERE Email1=? AND First_Name=? AND Last_Name=?");
-  $stmt->execute(array($params['Email1'], $params['First_Name'], $params['Last_Name']));
+  $stmt = $db->prepare("SELECT * FROM contactperson WHERE Email1=?");
+  $stmt->execute(array($params['Email1']));
   $row_count = $stmt->rowCount();
 
   if ($row_count) {
     $st = $db->prepare("UPDATE contactperson SET 
+      First_Name=:First_Name,
+      Last_Name=:Last_Name,
       Address_1=:Address_1, 
       Address_2=:Address_2,
       City=:City,
@@ -92,7 +93,7 @@ function setHousehold($params) {
       Phone1=:Phone1,
       Phone2=:Phone2,
       Email2=:Email2
-      WHERE Email1=:Email1 AND First_Name=:First_Name AND Last_Name=:Last_Name
+      WHERE Email1=:Email1
     ");
   } else {
     $st = $db->prepare("INSERT INTO contactperson SET 
@@ -107,8 +108,7 @@ function setHousehold($params) {
       Phone1=:Phone1,
       Phone2=:Phone2,
       Email1=:Email1,
-      Email2=:Email2,
-      Notes_Comments=''
+      Email2=:Email2
     ");
   }
   
@@ -128,7 +128,7 @@ function setHousehold($params) {
       ':Email2' => $params['Email2']
     ));
   } catch(PDOExecption $e) { 
-    print "Error!: " . $e->getMessage() . "</br>"; 
+    print "Error!: " . $e->getMessage(); 
   }
 
   $db = null;
@@ -139,10 +139,11 @@ function setHousehold($params) {
 function getStudent($email, $enrollStatus) {
   require("db_connection.php");
 
-  $stmt = $db->prepare("SELECT s.*, g.Description AS Grade FROM student AS s 
+  $stmt = $db->prepare("SELECT s.*, g.Description AS Grade, d.Name AS DiplomaType FROM student AS s 
     LEFT JOIN account AS a ON s.Account_Id=a.Account_Id 
-    LEFT JOIN wordpress2.wp_users AS w ON a.wp_users_ID=w.ID
+    LEFT JOIN wordpress.wp_users AS w ON a.wp_users_ID=w.ID
     LEFT JOIN grade AS g ON s.Grade_Id=g.Grade_Id
+    LEFT JOIN diplomatype AS d ON s.DiplomaType_Id=d.DiplomaType_Id
     WHERE w.user_email=? AND s.Status=?
   ");
   if ($enrollStatus)
@@ -154,9 +155,24 @@ function getStudent($email, $enrollStatus) {
   return $stmt;
 }
 
+function getDiplomaType() {
+  require("db_connection.php");
+
+  $stmt = $db->prepare("SELECT * FROM diplomatype ORDER BY Display_Order");
+  $stmt->execute();
+  $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  
+  $db = null;
+  return $rows;
+}
+
 // insert student data
 function insertStudent($data) {
   require("db_connection.php");
+
+  $rows = getContactPerson($data['email']);
+  $ParentOrGuardian_1_Id = $rows[0]['ContactPerson_Id'];
+  $ParentOrGuardian_2_Id = $rows[0]['ContactPerson_Id'];
 
   $stmt = $db->prepare("INSERT INTO student SET
             Account_Id = :Account_Id,
@@ -165,15 +181,18 @@ function insertStudent($data) {
             Last_Name = :Last_Name,
             Grade_Id = :Grade_Id,
             Birth_Date = :Birth_Date,
+            DiplomaType_Id = :DiplomaType_Id,
             Status = '1',
-            Parent_or_Guardian_1_GuardianToStudentRelation_Id = '20',
-            Parent_or_Guardian_2_GuardianToStudentRelation_Id = '10'
+            ParentOrGuardian_1_Id = :ParentOrGuardian_1_Id,
+            ParentOrGuardian_2_Id = :ParentOrGuardian_2_Id,
+            Parent_or_Guardian_1_GuardianToStudentRelation_Id = '10',
+            Parent_or_Guardian_2_GuardianToStudentRelation_Id = '20'
   ");
 
   try { 
-    $stmt->execute(array(':Account_Id' => $data['Account_Id'], ':First_Name' => $data['First_Name'], ':Middle_Name' => $data['Middle_Name'], ':Last_Name' => $data['Last_Name'], ':Grade_Id' => $data['Grade_Id'], ':Birth_Date' => $data['Birth_Date']));
+    $stmt->execute(array(':Account_Id' => $data['Account_Id'], ':First_Name' => $data['First_Name'], ':Middle_Name' => $data['Middle_Name'], ':Last_Name' => $data['Last_Name'], ':Grade_Id' => $data['Grade_Id'], ':Birth_Date' => $data['Birth_Date'], ':DiplomaType_Id' => $data['DiplomaType_Id'], ':ParentOrGuardian_1_Id' => $ParentOrGuardian_1_Id, ':ParentOrGuardian_2_Id' => $ParentOrGuardian_2_Id));
   } catch(PDOExecption $e) { 
-    print "Error!: " . $e->getMessage() . "</br>"; 
+    print "Error!: " . $e->getMessage(); 
   }
 
   $db = null;
@@ -189,14 +208,15 @@ function updateStudent($data) {
             Middle_Name = :Middle_Name,
             Last_Name = :Last_Name,
             Grade_Id = :Grade_Id,
-            Birth_Date = :Birth_Date
+            Birth_Date = :Birth_Date,
+            DiplomaType_Id = :DiplomaType_Id
           WHERE Student_Id=:Student_Id
   ");
 
   try { 
-    $stmt->execute(array(':Student_Id' => $data['Student_Id'], ':First_Name' => $data['First_Name'], ':Middle_Name' => $data['Middle_Name'], ':Last_Name' => $data['Last_Name'], ':Grade_Id' => $data['Grade_Id'], ':Birth_Date' => $data['Birth_Date']));
+    $stmt->execute(array(':Student_Id' => $data['Student_Id'], ':First_Name' => $data['First_Name'], ':Middle_Name' => $data['Middle_Name'], ':Last_Name' => $data['Last_Name'], ':Grade_Id' => $data['Grade_Id'], ':Birth_Date' => $data['Birth_Date'], ':DiplomaType_Id' => $data['DiplomaType_Id']));
   } catch(PDOExecption $e) { 
-    print "Error!: " . $e->getMessage() . "</br>"; 
+    print "Error!: " . $e->getMessage(); 
   }
 
   $db = null;
@@ -212,7 +232,7 @@ function removeStudent($Student_Id) {
   try { 
     $stmt->execute(array(':Student_Id' => $Student_Id));
   } catch(PDOExecption $e) { 
-    print "Error!: " . $e->getMessage() . "</br>"; 
+    print "Error!: " . $e->getMessage(); 
   }
 
   $db = null;
@@ -230,7 +250,7 @@ function revertStudent($Student_Ids) {
       $stmt->execute(array($Student_Id));  
     }
   } catch(PDOExecption $e) { 
-    print "Error!: " . $e->getMessage() . "</br>"; 
+    print "Error!: " . $e->getMessage(); 
   }
 
   $db = null;
@@ -246,7 +266,7 @@ function deleteStudent($Student_Id) {
   try {
     $stmt->execute(array($Student_Id));
   } catch(PDOExecption $e) { 
-    print "Error!: " . $e->getMessage() . "</br>"; 
+    print "Error!: " . $e->getMessage(); 
   }
 
   $db = null;

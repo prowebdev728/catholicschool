@@ -3,9 +3,9 @@
 include 'utility_functions.php';
 include 'model_functions.php';
 
-//receiving the parameters by query string
-
 $proc = $_REQUEST['proc'];
+$status = true;
+$response = array();
 
 if ($proc == 'addStudent') {
 	$data = array();
@@ -16,70 +16,32 @@ if ($proc == 'addStudent') {
 	$data['Last_Name'] = $_POST['studentLastName'];
 	$data['Grade_Id'] = $_POST['studentGradeId'];
 	$data['Birth_Date'] = $_POST['studentBirthDate'];
+	$data['DiplomaType_Id'] = $_POST['studentDiplomaTypeId'];
 
 	$status = insertStudent($data);
-	if ($status) {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Success';
-	} else {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Failed';
-	}
-	exit(json_encode($response));
 } else if ($proc == 'updateStudent') {
 	$data = array();
 	$data['Student_Id'] = $_POST['studentId'];
 	$data['First_Name'] = $_POST['studentFirstName'];
 	$data['Middle_Name'] = $_POST['studentMiddleName'];
 	$data['Last_Name'] = $_POST['studentLastName'];
-	$data['Grade_Id'] = $_POST['studentGrade'];
-	$data['Birth_Date'] = $_POST['studentDateBirth'];
+	$data['Grade_Id'] = $_POST['studentGradeId'];
+	$data['Birth_Date'] = $_POST['studentBirthDate'];
+	$data['DiplomaType_Id'] = $_POST['studentDiplomaTypeId'];
 
 	$status = updateStudent($data);
-	if ($status) {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Success';
-	} else {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Failed';
-	}
-	exit(json_encode($response));
 } else if ($proc == 'removeStudent') {
 	$id = $_POST['studentId'];
 	
 	$status = removeStudent($id);
-	if ($status) {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Success';
-	} else {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Failed';
-	}
-	exit(json_encode($response));
 } else if ($proc == 'revertStudent') {
 	$ids = $_POST['studentIds'];
 
 	$status = revertStudent($ids);
-	if ($status) {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Success';
-	} else {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Failed';
-	}
-	exit(json_encode($response));
 } else if ($proc == 'deleteStudent') {
 	$id = $_POST['studentId'];
 	
 	$status = deleteStudent($id);
-	if ($status) {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Success';
-	} else {
-		$response['statusCode'] = http_response_code();
-		$response['message'] = 'Failed';
-	}
-	exit(json_encode($response));
 } else if ($proc == 'getNotEnrolledStudent') {
 	$email = $_POST['email'];
 
@@ -93,7 +55,29 @@ if ($proc == 'addStudent') {
 		$response['message'] = 'Failed';
 	}
 	exit(json_encode($response));
+} else if ($proc == 'diplomaType') {
+	$rows = getDiplomaType();
+
+	if (count($rows)) {
+		$response['statusCode'] = http_response_code();
+		$response['message'] = 'Success';
+		$response['datas'] = $rows;
+	} else {
+		$response['statusCode'] = http_response_code();
+		$response['message'] = 'Failed';
+	}
+} else {
+	$response['statusCode'] = http_response_code();
+	$response['message'] = 'This action is not registered.';
 }
 
+if ($status) {
+	$response['statusCode'] = http_response_code();
+	$response['message'] = 'Success';
+} else {
+	$response['statusCode'] = http_response_code();
+	$response['message'] = 'Failed';
+}
+exit(json_encode($response));
 
 ?>
