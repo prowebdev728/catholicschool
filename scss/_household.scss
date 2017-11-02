@@ -1,5 +1,5 @@
 #household_page {
-	> h3 {
+	& > h3 {
 		margin-top: 0;
 		color: #55518a;
 	}
@@ -14,8 +14,19 @@
 		border-bottom: 1px solid #ddd;
 	}
 
+	label {
+		color: #444;
+	}
+
 	.homeaddress {
 		padding-top: 0px;
+
+		& > div:nth-of-type(3) {
+			& > div {
+				display: flex;
+				justify-content: space-between;
+			}
+		}
 	}
 
 	.homeaddress-city, 
