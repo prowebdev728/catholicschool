@@ -33,9 +33,28 @@ $Email2 = $rows ? $rows[0]["Email2"] : '';
   <title>Catholic School</title>
 
   <link rel="stylesheet" href="../css/bootstrap.min.css">
-  <link rel="stylesheet" href="../css/tooltipster.bundle.min.css">
   <link rel="stylesheet" href="../css/daterangepicker.css" />
-  <link rel="stylesheet" href="../css/app.css">  
+  <link rel="stylesheet" href="../css/app.css">
+
+  <script src="../js/jquery.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/moment.min.js"></script>
+  <script src="../js/daterangepicker.js"></script>
+  <script>
+    let alertMessage = 'Sorry, some unknown error occurred! Please contact us at <strong>support@ada.school</strong> to resolve this problem.';
+    let Account_Id = "<?php echo $_POST['Account_Id'];?>";
+    //This script handle the tab's navigation
+    $(document).ready(function() {
+      $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        let index = $(this).index();
+        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+      });
+    });
+  </script>
 </head>
 <body>
   <header>
@@ -117,25 +136,5 @@ $Email2 = $rows ? $rows[0]["Email2"] : '';
       </div>
     </div>
   </section>
-
-  <script src="../js/jquery.min.js"></script>
-  <script src="../js/bootstrap.min.js"></script>
-  <script src="../js/moment.min.js"></script>
-  <script src="../js/daterangepicker.js"></script>
-
-  <script>
-    var Account_Id = "<?php echo $_POST['Account_Id'];?>";
-    //This script handle the tab's navigation
-    $(document).ready(function() {
-      $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
-        e.preventDefault();
-        $(this).siblings('a.active').removeClass("active");
-        $(this).addClass("active");
-        var index = $(this).index();
-        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
-      });
-    });
-  </script>
 </body>
 </html>
